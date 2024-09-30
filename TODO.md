@@ -1,11 +1,11 @@
 # TODO List
 
-- [ ] Pre process data by year: 
-    - [ ] disaster frequency by:
-        - [ ] country
-        - [ ] subregion
-        - [ ] region
-    - [ ] disaster deaths by:
-        - [ ] country
-        - [ ] subregion
-        - [ ] region
+- [x] Pre process data by year: 
+    - [x] disaster frequency by:
+        - [x] country
+        - [x] subregion
+        - [x] region
+    - [x] disaster deaths by:
+        - [x] country
+        - [x] subregion
+        - [x] region
