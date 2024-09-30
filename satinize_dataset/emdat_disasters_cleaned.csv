@@ -1,4 +1,4 @@
-DisNo.,Disaster Group,Disaster Subgroup,Disaster Type,Country,Subregion,Region,Start Year,Total Deaths
+DisNo,DisasterGroup,DisasterSubgroup,DisasterType,Country,Subregion,Region,StartYear,TotalDeaths
 1999-9388-DJI,Natural,Climatological,Drought,Djibouti,Sub-Saharan Africa,Africa,2001,0.0
 1999-9388-SDN,Natural,Climatological,Drought,Sudan,Northern Africa,Africa,2000,0.0
 1999-9388-SOM,Natural,Climatological,Drought,Somalia,Sub-Saharan Africa,Africa,2000,21.0
