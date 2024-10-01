@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3 Visualization Layout</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="/dist/output.css" rel="stylesheet">
+    
+</head>
+
+<body class="overflow-hidden bg-gray-700">
+    <header>
+        <h1>D3 Visualization Layout</h1>
+    </header>
+
+    <div id="left" class="chart"></div>
+    <div id="top-right" class="chart"></div>
+    <div id="bottom-right" class="chart"></div>
+
+    <script>
+        // First chart on the left
+        const svgLeft = d3.select("#left").append("svg")
+            .attr("width", "100%")
+            .attr("height", "100%");
+
+        svgLeft.append("circle")
+            .attr("cx", 100)
+            .attr("cy", 100)
+            .attr("r", 50)
+            .attr("fill", "red");
+
+        // Second chart on the top-right
+        const svgTopRight = d3.select("#top-right").append("svg")
+            .attr("width", "100%")
+            .attr("height", "100%");
+
+        svgTopRight.append("rect")
+            .attr("x", 50)
+            .attr("y", 50)
+            .attr("width", 100)
+            .attr("height", 100)
+            .attr("fill", "green");
+
+        // Third chart on the bottom-right
+        const svgBottomRight = d3.select("#bottom-right").append("svg")
+            .attr("width", "100%")
+            .attr("height", "100%");
+
+        svgBottomRight.append("line")
+            .attr("x1", 50)
+            .attr("y1", 50)
+            .attr("x2", 150)
+            .attr("y2", 150)
+            .attr("stroke", "blue")
+            .attr("stroke-width", 5);
+    </script>
+
+</body>
+
+</html>
