@@ -1,51 +1,159 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html>
+  <head>
+    <title>Dashboard</title>
+    <!-- Styling for the dashboard -->
+    <style>
+      body {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+      }
   
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>D3 Visualization Layout</title>
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <link href="./output.css" rel="stylesheet">
-  <script src="script.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.0.1/js/vendor/jquery.min.js">
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.1/dist/js/foundation.min.js" crossorigin="anonymous">
-  </script>
-
-  <!-- slider Script-->
-  <script src="slider.js"></script>
-</head>
-
-<body class="overflow-hidden">
-  <header class="text-2xl text-center" style="padding-bottom: 35px;">
-    <h1>Disasters around the World</h1>
+      .dashboard {
+  display: grid;
+  grid-template-columns: 7fr 6fr; /* Ajustar conforme necessário */
+  border: none; /* Remover borda do dashboard */
+}
+  
+      .dashboard > div {
+        border: 1px solid #ccc;
+        padding: 10px;
+        background-color: #f9f9f9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        border: none; 
+      }
+  
+      /* Forcing SVG to fill the container */
       
-  </header>
+  
+      .leftmenu {
+  grid-row: span 2;
+  grid-column: 1 ; /* Faz com que a .leftmenu ocupe duas colunas */
+  max-width: 900px; /* Largura máxima */
+  border: none;
+}
+  
+  .visualization {
+    max-width: 700px; /* Limite de largura */
+    max-height: 300px; /* Limite de altura */
+    overflow: hidden; /* Impede overflow */
+    border: none;
+  }
 
-  <!-- Double range slider (flat design)  -->
+  
+  #scatterplot {
+  width: 100%; /* Certifica-se de que ocupa toda a largura da coluna */
+}
+      /* Additional styles for header and slider */
+      header {
+        text-align: center;
+        padding: 10px;
+        font-size: 24px;
+      }
+  
+      .range-slider {
+        margin: 20px auto;
+      }
+
+    
+
+path.arc {
+  opacity: 0.9;
+  transition: opacity 0.5s;
+}
+
+path.arc:hover {
+  opacity: 0.7;
+}
+
+.axis line, .axis circle  {
+  stroke: #cccccc;
+  stroke-width: 1px
+}
+
+.axis circle {
+  fill: none;
+}
+
+.r.axis text {
+  text-anchor: end
+}
+.radial-container {
+    width: 300px; /* Defina a largura desejada */
+    height: 300px; /* Defina a altura desejada */
+    margin: 0 auto; /* Centraliza a div */
+}
+
+    </style>
+   <head>
+  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3 Visualization Layout</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="./output.css" rel="stylesheet">
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.0.1/js/vendor/jquery.min.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.1/dist/js/foundation.min.js" crossorigin="anonymous">
+    </script>
+  
+    <!-- slider Script-->
+    <script src="slider.js"></script>
+  </head>
+    
+  </head>
+  <!-- Start the dashboard upon page load -->
+  <body class="overflow-hidden">
+    <header>
+      <h1  class="text-center">
+        Disasters around the World
+      </h1>
+    </header>
+     <!-- Double range slider (flat design)  -->
   <div class="range-slider flat" data-ticks-position='top'
-    style='--min:2000; --max:2024; --value-a:2000; --value-b:2024; --suffix:""; --text-value-a:"2000"; --text-value-b:"2024"; margin-left: 34px;margin-right: 34px;'>
-    <input id="slider-min" type="range" min="2000" max="2024" value="2000"
-        oninput="updateSlider(this, 'a')">
-    <output></output>
-    <input id="slider-max" type="range" min="2000" max="2024" value="2024"
-        oninput="updateSlider(this, 'b')">
-    <output></output>
-    <div class='range-slider__progress'></div>
+  style='--min:2000; --max:2024; --value-a:2000; --value-b:2024; --suffix:""; --text-value-a:"2000"; --text-value-b:"2024"; margin-left: 34px;margin-right: 34px;'>
+  <input id="slider-min" type="range" min="2000" max="2024" value="2000"
+      oninput="updateSlider(this, 'a')">
+  <output></output>
+  <input id="slider-max" type="range" min="2000" max="2024" value="2024"
+      oninput="updateSlider(this, 'b')">
+  <output></output>
+  <div class='range-slider__progress'></div>
 </div>
+    <!-- The main grid layout of the dashboard -->
+    <main class="dashboard">
+      <div class="leftmenu shadow-lg rounded-2">
+        <div id="choropleth-container" style="position: relative">
+        </div>
+        
+       
 
-  <main class="grid grid-cols-7 grid-rows-2 gap-2 h-screen pb-20">
-    <div id="choropleth" class="bg-gray-200 p-4 row-span-2 col-span-4">Left Content</div>
-    <div id="radial" class="bg-gray-200 p-4 col-span-3">Top Right Content</div>
-    <div id="scatterplot" class="bg-gray-200 p-4 col-span-3">
+        <div
+          class="visualization d-flex pt-0 justify-content-center"
+          id="custom"
+        >
+          <div
+            id="legend"
+            class="d-flex flex-column justify-content-center"
+            style="width: 167px"
+          ></div>
+        </div>
+      </div>
 
-      <script src="scatterPLot.js"></script>
-
-    </div>
-  </main>
-
-
-</body>
-
+      <div class="visualization shadow-lg m-2 rounded-2" id="radialChart">
+       
+        <script src="radialChart.js"></script>
+      </div>
+      <div class="visualization shadow-lg m-2 rounded-2 pt-3 justify-content-start flex-column" id="scatterplot">
+        <script src="scatterPLot.js"></script>
+      
+      </div>
+    </main>
+  </body>
 </html>

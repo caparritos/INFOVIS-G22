@@ -4,9 +4,9 @@ function createScatterPlot() {
     d3.select("#scatterplot").select("svg").remove();
   
     // Define as margens e dimensões do gráfico
-    var margin = {top: 10, right: 30, bottom: 30, left: 60},
-        width = 460 - margin.left - margin.right,
-        height = 400 - margin.top - margin.bottom;
+    var margin = {top: 10, right: 15, bottom: 25, left: 50},
+        width = 400 ,
+        height = 300 - margin.top - margin.bottom;
   
     // Adiciona o elemento SVG à página
     var svg = d3.select("#scatterplot")
@@ -25,14 +25,16 @@ function createScatterPlot() {
         .range([ 0, width ]);
       svg.append("g")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(x))
+        .style("font-size", "10px");
   
       // Eixo Y
       var y = d3.scaleLinear()
         .domain([0, 500000])
         .range([ height, 0]);
       svg.append("g")
-        .call(d3.axisLeft(y));
+        .call(d3.axisLeft(y))
+        .style("font-size", "10px");
   
       // Adiciona os pontos (dots) ao gráfico
       svg.append('g')
