@@ -17,7 +17,7 @@ function createScatterPlot() {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   
     // Lê os dados CSV
-    d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/2_TwoNum.csv", function(data) {
+    d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/2_TwoNum.csv").then(function(data) {
   
       // Eixo X
       var x = d3.scaleLinear()
