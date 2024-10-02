@@ -355,7 +355,6 @@
 body>.range-slider,
 label[dir=rtl] .range-slider {
     min-width: 200px;
-    width: calc(100% - 40px);
     display: flex;
     justify-content: center;
 }

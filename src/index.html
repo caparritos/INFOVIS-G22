@@ -1,40 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>D3 Visualization Layout</title>
-  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://d3js.org/d3.v4.js"></script>
   <link href="./output.css" rel="stylesheet">
   <script src="script.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.0.1/js/vendor/jquery.min.js">
   </script>
   <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.1/dist/js/foundation.min.js" crossorigin="anonymous">
   </script>
+
+  <!-- slider Script-->
+  <script src="slider.js"></script>
 </head>
 
 <body class="overflow-hidden">
-  <header class="text-2xl text-center">
+  <header class="text-2xl text-center" style="padding-bottom: 35px;">
     <h1>Disasters around the World</h1>
+      
   </header>
 
   <!-- Double range slider (flat design)  -->
   <div class="range-slider flat" data-ticks-position='top'
-    style='--min:2000; --max:2024; --value-a:2000; --value-b:2024; --suffix:""; --text-value-a:"2000"; --text-value-b:"2024";'>
-    <input type="range" min="2000" max="2024" value="2000"
-      oninput="this.parentNode.style.setProperty('--value-a',this.value); this.parentNode.style.setProperty('--text-value-a', JSON.stringify(this.value))">
+    style='--min:2000; --max:2024; --value-a:2000; --value-b:2024; --suffix:""; --text-value-a:"2000"; --text-value-b:"2024"; margin-left: 34px;margin-right: 34px;'>
+    <input id="slider-min" type="range" min="2000" max="2024" value="2000"
+        oninput="updateSlider(this, 'a')">
     <output></output>
-    <input type="range" min="2000" max="2024" value="2024"
-      oninput="this.parentNode.style.setProperty('--value-b',this.value); this.parentNode.style.setProperty('--text-value-b', JSON.stringify(this.value))">
+    <input id="slider-max" type="range" min="2000" max="2024" value="2024"
+        oninput="updateSlider(this, 'b')">
     <output></output>
     <div class='range-slider__progress'></div>
-  </div>
+</div>
 
   <main class="grid grid-cols-7 grid-rows-2 gap-2 h-screen pb-20">
     <div id="choropleth" class="bg-gray-200 p-4 row-span-2 col-span-4">Left Content</div>
     <div id="radial" class="bg-gray-200 p-4 col-span-3">Top Right Content</div>
-    <div id="scatterplot" class="bg-gray-200 p-4 col-span-3">Bottom Right Content</div>
+    <div id="scatterplot" class="bg-gray-200 p-4 col-span-3">
+      <script src="scatterPLot.js"></script>
+
+    </div>
   </main>
 
 
