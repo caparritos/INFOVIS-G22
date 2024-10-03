@@ -1,4 +1,9 @@
 
+// Declare global variables for year range
+var minYear = 2000;
+var maxYear = 2024;
+
+
 // slider prevent max > min
 function updateSlider(slider, type) {
     const sliderMin = document.getElementById('slider-min');
@@ -26,6 +31,7 @@ function updateSlider(slider, type) {
         slider.parentNode.style.setProperty('--text-value-b', JSON.stringify(sliderMin.value));
       }
     }
+    updateScatterPlot(sliderMin.value, sliderMax.value);
   }
   
 
