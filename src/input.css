@@ -182,7 +182,7 @@
     position: absolute;
     left: var(--start-end);
     right: var(--start-end);
-    top: calc(var(--ticks-gap) * var(--flip-y, 0) + var(--thumb-size) / 2 - var(--track-height) / 2);
+    top: 0.97px;
     height: calc(var(--track-height));
     background: var(--progress-background, #eee);
     pointer-events: none;

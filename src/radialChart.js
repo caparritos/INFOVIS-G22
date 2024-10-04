@@ -1,31 +1,34 @@
+// SIZE OF SVG (GRAPH)
 const width = 360,
   height = 320,
   chartRadius = height / 2 - 40;
 
+  // COLOR OF BARS 
 const color = d3.scaleOrdinal(d3.schemeCategory10);
 
 
-
+// ADD SVG TO RADIAL CHART DIV 
 let svg = d3.select('#radialChart').append('svg')
   .attr('width', width)
   .attr('height', height)
   .append('g')
   .attr('transform', `translate(${width / 2}, ${height / 2})`);
 
+// SELECT WHERE TO PUT TOOLTIP DIV
 let tooltip = d3.select('#radialChart').append('div')
-  .attr('class', 'tooltip') // Mantenha a classe da sua div
-  .style('position', 'absolute')  // Certifique-se de que a tooltip está posicionada como absoluta
-  .style('display', 'none'); // Inicialmente oculta
+  .attr('class', 'tooltip') 
+  .style('position', 'absolute')  
+  .style('display', 'none'); 
 const PI = Math.PI,
   arcMinRadius = 10,
   arcPadding = 10,
   labelPadding = -5,
   numTicks = 10;
 
-// Carregar o CSV
+
 d3.csv('energy.csv').then(data => {
 
-  // Convertendo valores para números
+  
   data.forEach(d => {
     d.value = +d.value;
   });
@@ -92,36 +95,36 @@ d3.csv('energy.csv').then(data => {
     .duration(1000)
     .attrTween('d', (d, i) => arcTween(d, i, arc));
 
-  // Eventos de Mouse
+  // Mouse actions 
   arcs.on('mousemove', (event, d) => showTooltip(event, d));
   arcs.on('mouseout', hideTooltip);
 
 });
 
-// Função para interpolação do arco
 function arcTween(d, i, arc) {
   const interpolate = d3.interpolate(0, d.value);
   return t => arc({ value: interpolate(t) }, i);
 }
 
-// Funções para mostrar e esconder tooltip
+
+//  TOOLTIP FUNCTIONS
 function showTooltip(event, d) {
-  const svgPosition = svg.node().getBoundingClientRect(); // Posição do contêiner SVG
+  const svgPosition = svg.node().getBoundingClientRect(); 
 
   tooltip.html(`<strong>${d.value}</strong>`)
-    .style("display", "block") // Mostrar tooltip
-    .style("left", (event.clientX - 844) + "px") // Ajustar posição horizontal
-    .style("top", (event.clientY - svgPosition.top - 20) + "px");  // Ajustar posição vertical
+    .style("display", "block") 
+    .style("left", (event.clientX - 844) + "px") 
+    .style("top", (event.clientY - svgPosition.top - 20) + "px");  
 }
 
 
 function hideTooltip() {
   tooltipTimeout = setTimeout(() => {
-    tooltip.style('display', 'none'); // Esconder tooltip
-  }, 1000); // 100 ms de atraso para evitar o piscar
+    tooltip.style('display', 'none'); 
+  }, 1000); 
 }
 
-// Funções auxiliares
+//aux functions
 function rad2deg(angle) {
   return angle * 180 / Math.PI;
 }

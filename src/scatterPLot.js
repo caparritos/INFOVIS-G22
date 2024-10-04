@@ -81,7 +81,7 @@ function createScatterPlot(minYear, maxYear) {
 
     // Name of axis X
     svg.append("text")
-      .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.bottom - 10) + ")") // Posiciona o rótulo
+      .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.bottom - 10) + ")") 
       .style("text-anchor", "middle")
       .text("Total de Mortes");
     // Name of axis Y
@@ -93,6 +93,7 @@ function createScatterPlot(minYear, maxYear) {
       .text("Número de Desastres");
 
     var tooltip = d3.select("#tooltip"); // Select tooltip
+
     // add points to graph
 
     svg.append('g')
