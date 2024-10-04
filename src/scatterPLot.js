@@ -92,8 +92,8 @@ function createScatterPlot(minYear, maxYear) {
       .style("text-anchor", "middle")
       .text("Número de Desastres");
 
-    // add points to graph
     var tooltip = d3.select("#tooltip"); // Select tooltip
+    // add points to graph
 
     svg.append('g')
       .selectAll("circle")
