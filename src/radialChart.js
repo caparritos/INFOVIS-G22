@@ -10,8 +10,8 @@ let svg = d3.select('#radialChart').append('svg')
   .append('g')
     .attr('transform', `translate(${width / 2}, ${height / 2})`);
 
-let tooltip = d3.select('body').append('div')
-  .attr('class', 'tooltip');
+  var tooltip = d3.select("#tooltip"); // Select tooltip
+
 
 // Constantes
 const PI = Math.PI,
