@@ -23,7 +23,7 @@ function processData(data, minYear, maxYear) {
     }
 
     acc[country].disasters_per_area += +current.disasters_per_area;
-    acc[country].total_deaths += +current.total_deaths > 0 ? Math.log(+current.total_deaths) : 0;
+    acc[country].total_deaths += +current.total_deaths == 0 ? 1 : +current.total_deaths; //> 0 ? Math.log(+current.total_deaths) : 0;
 
     return acc;
   }, {});
@@ -69,6 +69,7 @@ function createScatterPlot(minYear, maxYear) {
         .scaleLinear()
         .domain([0, parseInt(maxX) * 1.1])
         .range([0, width]);
+        
 
       svg
         .append("g")
@@ -77,14 +78,16 @@ function createScatterPlot(minYear, maxYear) {
         .style("font-size", "10px");
 
       // axis Y
-      var y = d3
-        .scaleLinear()
-        .domain([0, parseInt(maxY) * 1.1])
-        .range([height, 0]);
+      var y = d3.scaleLog()
+      .base(10)
+      .domain([1, 250000])
+      .range([height, 0]);
 
-      svg
-        .append("g")
-        .call(d3.axisLeft(y).tickFormat(formatAbbreviation))
+      // Add Y-axis with real (linear) values displayed
+      svg.append("g")
+        .call(d3.axisLeft(y)
+        .ticks(5)
+        .tickFormat(d3.format(".1e"))) // Display in scientific notation
         .style("font-size", "10px");
 
       // Name of axis X
@@ -95,13 +98,14 @@ function createScatterPlot(minYear, maxYear) {
           "translate(" + width / 2 + " ," + (height + margin.bottom - 10) + ")"
         )
         .style("text-anchor", "middle")
-        .text("Disasters per 1000km2 (area > 5000km2)");
+        .text("Disaster density (disasters per 1000km2 for countries with area > 5000km2)");
       // Name of axis Y
       svg
         .append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", 0 - margin.left + 20)
         .attr("x", 0 - height / 2)
+        .attr("dy", "-.5em") 
         .style("text-anchor", "middle")
         .text("Total Deaths (logarithmic)");
 
@@ -127,9 +131,13 @@ function createScatterPlot(minYear, maxYear) {
           tooltip.transition().duration(200).style("opacity", 0.9);
 
           tooltip
-            .html(`<strong>${d.Country}</strong>`) //country name
-            .style("left", event.clientX + "px")
-            .style("top", event.clientY + "px");
+            .html(
+              `<strong>${d.Country}</strong><br>` + // Display country
+              `Disasters density: ${d.disasters_per_area.toFixed(1)}<br>` + // Show disasters per area
+              `Total Deaths: ${d.total_deaths.toExponential(2)}` // Show total deaths in scientific notation
+            )
+            .style("left", (event.clientX+10) + "px")
+            .style("top", (event.clientY-20) + "px");
           d3.select(this).style("fill", "#FF0000");
         })
         .on("mouseout", function (d) {
