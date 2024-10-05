@@ -964,3 +964,117 @@ label[dir=rtl] .range-slider {
   justify-content: center;
 }
 
+
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 7fr 6fr;
+  /* Ajustar conforme necessário */
+  border: none;
+  /* Remover borda do dashboard */
+}
+
+.dashboard>div {
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f9f9f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border: none;
+}
+
+/* Forcing SVG to fill the container */
+
+
+.leftmenu {
+  grid-row: span 2;
+  grid-column: 1;
+  /* Faz com que a .leftmenu ocupe duas colunas */
+  max-width: 900px;
+  /* Largura máxima */
+  border: none;
+}
+
+.visualization {
+  max-width: 700px;
+  /* Limite de largura */
+  max-height: 300px;
+  /* Limite de altura */
+  overflow: hidden;
+  /* Impede overflow */
+  border: none;
+}
+
+
+#scatterplot {
+  width: 100%;
+  /* Certifica-se de que ocupa toda a largura da coluna */
+  width: 900px;
+  /* Definir a largura visível do container */
+}
+
+/* Additional styles for header and slider */
+header {
+  text-align: center;
+  padding: 10px;
+  font-size: 24px;
+}
+
+.range-slider {
+  margin: 20px auto;
+}
+
+
+
+path.arc {
+  opacity: 0.9;
+  transition: opacity 0.5s;
+}
+
+path.arc:hover {
+  opacity: 0.7;
+}
+
+.axis line,
+.axis circle {
+  stroke: #cccccc;
+  stroke-width: 1px
+}
+
+.axis circle {
+  fill: none;
+}
+
+.r.axis text {
+  text-anchor: end
+}
+
+.radial-container {
+  width: 300px;
+  /* Defina a largura desejada */
+  height: 300px;
+  /* Defina a altura desejada */
+  margin: 0 auto;
+  /* Centraliza a div */
+}
+
+#tooltip {
+  position: absolute;
+  opacity: 0;
+  /* Inicialmente invisível */
+  background: lightgray;
+  padding: 5px;
+  border-radius: 5px;
+  pointer-events: none;
+  /* Não interfere nos eventos do mouse */
+  z-index: 10;
+  /* Garante que o tooltip fique acima de outros elementos */
+}

@@ -50,7 +50,7 @@ function createScatterPlot(minYear, maxYear) {
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   // read csv
-  d3.csv("../satinize_dataset/pre-processing/disasters_per_country.csv").then(function (data) {
+  d3.csv("../satinize_dataset/country_data_processed.csv").then(function (data) {
     var filteredData = processData(data, minYear, maxYear);
 
     var maxY = d3.max(filteredData, function (d) { return d.num_disasters; });
