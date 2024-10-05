@@ -37,7 +37,7 @@ function createScatterPlot(minYear, maxYear) {
   d3.select("#scatterplot").select("svg").remove();
 
   // Define margins
-  var margin = { top: 20, right: 15, bottom: 50, left: 50 },
+  var margin = { top: 20, right: 15, bottom: 50, left: 60 },
     width = 600,
     height = 300 - margin.top - margin.bottom;
 
