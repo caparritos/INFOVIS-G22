@@ -21,7 +21,7 @@ let tooltip = d3.select('#radialChart').append('div')
   .style('display', 'none'); 
 const PI = Math.PI,
   arcMinRadius = 10,
-  arcPadding = 10,
+  arcPadding = 5,
   labelPadding = -5,
   numTicks = 10;
 
@@ -35,12 +35,12 @@ d3.csv('energy.csv').then(data => {
 
   const scale = d3.scaleLinear()
     .domain([0, d3.max(data, d => d.value) * 1.1])
-    .range([0, 2 * PI]);
+    .range([0,  PI]);
 
   const ticks = scale.ticks(numTicks).slice(0, -1);
   const keys = data.map(d => d.name);
 
-  const numArcs = keys.length;
+  const numArcs = "9";
   const arcWidth = (chartRadius - arcMinRadius - numArcs * arcPadding) / numArcs;
 
   const arc = d3.arc()
