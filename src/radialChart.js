@@ -14,6 +14,14 @@ let svg = d3.select('#radialChart').append('svg')
   .append('g')
   .attr('transform', `translate(${width / 2}, ${height / 2})`);
 
+
+// Adicionar o segundo SVG para o segundo gráfico (lado a lado)
+let svg2 = d3.select('#radialChart').append('svg')
+.attr('width', width)
+.attr('height', height)
+.append('g')
+.attr('transform', `translate(${width / 2}, ${height / 2})`); // Mesmo centro
+
 // SELECT WHERE TO PUT TOOLTIP DIV
 let tooltip = d3.select('#radialChart').append('div')
   .attr('class', 'tooltip') 
@@ -35,7 +43,7 @@ d3.csv('energy.csv').then(data => {
 
   const scale = d3.scaleLinear()
     .domain([0, d3.max(data, d => d.value) * 1.1])
-    .range([0,  PI]);
+    .range([0,  (3 * PI) / 2 ]);
 
   const ticks = scale.ticks(numTicks).slice(0, -1);
   const keys = data.map(d => d.name);
@@ -56,13 +64,25 @@ d3.csv('energy.csv').then(data => {
     .data(data)
     .enter().append('g');
 
-  radialAxis.append('circle')
-    .attr('r', (d, i) => getOuterRadius(i, numArcs, arcWidth) + arcPadding);
-
+ 
   radialAxis.append('text')
     .attr('x', labelPadding)
     .attr('y', (d, i) => -getOuterRadius(i, numArcs, arcWidth) + arcPadding)
     .text(d => d.name);
+
+  // Radial Axis 
+  const radialAxis2 = svg2.append('g')
+    .attr('class', 'r axis')
+    .selectAll('g')
+    .data(data)
+    .enter().append('g');
+
+ 
+  radialAxis2.append('text')
+    .attr('x', labelPadding)
+    .attr('y', (d, i) => -getOuterRadius(i, numArcs, arcWidth) + arcPadding)
+    .text(d => d.name);
+    
 
   // Axial Axis
   const axialAxis = svg.append('g')
@@ -81,6 +101,23 @@ d3.csv('energy.csv').then(data => {
     .attr('transform', d => `rotate(${90 - rad2deg(scale(d))},${chartRadius + 10},0)`)
     .text(d => d);
 
+    // Axial Axis
+  const axialAxis2 = svg2.append('g')
+  .attr('class', 'a axis')
+  .selectAll('g')
+  .data(ticks)
+  .enter().append('g')
+  .attr('transform', d => `rotate(${rad2deg(scale(d)) - 90})`);
+
+axialAxis2.append('line')
+  .attr('x2', chartRadius);
+
+axialAxis2.append('text')
+  .attr('x', chartRadius + 10)
+  .style('text-anchor', d => (scale(d) >= PI && scale(d) < 2 * PI ? 'end' : null))
+  .attr('transform', d => `rotate(${90 - rad2deg(scale(d))},${chartRadius + 10},0)`)
+  .text(d => d);
+
   // Data Arcs
   const arcs = svg.append('g')
     .attr('class', 'data')
@@ -98,6 +135,24 @@ d3.csv('energy.csv').then(data => {
   // Mouse actions 
   arcs.on('mousemove', (event, d) => showTooltip(event, d));
   arcs.on('mouseout', hideTooltip);
+
+   // Data Arcs
+   const arcs2 = svg2.append('g')
+   .attr('class', 'data')
+   .selectAll('path')
+   .data(data)
+   .enter().append('path')
+   .attr('class', 'arc')
+   .style('fill', (d, i) => color(i));
+
+ arcs2.transition()
+   .delay((d, i) => i * 200)
+   .duration(1000)
+   .attrTween('d', (d, i) => arcTween(d, i, arc));
+
+ // Mouse actions 
+ arcs2.on('mousemove', (event, d) => showTooltip(event, d));
+ arcs2.on('mouseout', hideTooltip);
 
 });
 
