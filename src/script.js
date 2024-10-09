@@ -32,6 +32,7 @@ function updateSlider(slider, type) {
       }
     }
     updateScatterPlot(sliderMin.value, sliderMax.value);
+    updateRadialChart(sliderMin.value, sliderMax.value);
   }
   
 

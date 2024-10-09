@@ -33,13 +33,14 @@ function processData(data, minYear, maxYear) {
 
 // Function to create scatterplot
 function createScatterPlot(minYear, maxYear) {
+  let selectedCountry = null; 
   // Remove svg if exste to avoid sobreposition
   d3.select("#scatterplot").select("svg").remove();
 
   // Define margins
-  var margin = { top: 20, right: 15, bottom: 50, left: 60 },
+  var margin = { top: 5, right: 15, bottom: 50, left: 60 },
     width = 600,
-    height = 300 - margin.top - margin.bottom;
+    height = 250 - margin.top - margin.bottom;
 
   // Add svg elemnet to page
   var svg = d3
@@ -48,7 +49,8 @@ function createScatterPlot(minYear, maxYear) {
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    ;
 
   // read csv
   d3.csv("../satinize_dataset/pre-processing/disasters_per_country.csv").then(
@@ -126,7 +128,7 @@ function createScatterPlot(minYear, maxYear) {
           return y(d.total_deaths);
         })
         .attr("r", 3)
-        .style("fill", "#69b3a2")
+        .style("fill", (d) => (d.Country === selectedCountry ? "blue" : "#69b3a2"))
         .on("mouseover", function (event, d) {
           tooltip.transition().duration(200).style("opacity", 0.9);
 
@@ -138,12 +140,24 @@ function createScatterPlot(minYear, maxYear) {
             )
             .style("left", (event.clientX+10) + "px")
             .style("top", (event.clientY-20) + "px");
-          d3.select(this).style("fill", "#FF0000");
+          d3.select(this).style("fill", "#fc8d62");
         })
-        .on("mouseout", function (d) {
-          tooltip.transition().duration(500).style("opacity", 0);
-          d3.select(this).style("fill", "#69b3a2"); // Change back to original color
-        });
+        .on("mouseout", function (e,d) {
+          tooltip.transition().duration(100).style("opacity", 0);
+          if (selectedCountry === d.Country) {
+            d3.select(this).style("fill", "blue");
+          } else {
+            d3.select(this).style("fill", "#69b3a2"); // Volta à cor original
+          }
+        })
+        .on("click", (event, d) => {
+          selectedCountry = d.Country; // Atualiza o país selecionado
+          updateRadialChart(minYear, maxYear, selectedCountry); // Atualiza o gráfico radial
+
+        // Atualiza a cor dos círculos
+        svg.selectAll("circle")
+            .style("fill", (d) => (d.Country === selectedCountry ? "blue" : "#69b3a2"));
+          });
     }
   );
 }
