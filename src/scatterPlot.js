@@ -3,6 +3,7 @@ function updateScatterPlot(minYear, maxYear,country) {
   createScatterPlot(minYear, maxYear,country);
 } */
 
+var scatterplot_data = undefined;
 
 function processData(data, minYear, maxYear) {
   // Filter data with range
@@ -49,9 +50,8 @@ function updateScatterPlot(minYear, maxYear, country) {
 
 
   // read csv
-  d3.csv("../satinize_dataset/pre-processing/disasters_per_country.csv").then(
-    function (data) {
-      var filteredData = processData(data, minYear, maxYear);
+ 
+      var filteredData = processData(scatterplot_data, minYear, maxYear);
 
       var maxY = d3.max(filteredData, function (d) {
         return d.total_deaths;
@@ -78,7 +78,7 @@ function updateScatterPlot(minYear, maxYear, country) {
       svg
         .select("#x-axis-label")
         .transition()
-        .duration(1000)
+        .duration(500)
         .call(d3.axisBottom(x).tickFormat(formatAbbreviation).ticks(5))
         .style("font-size", "10px");
 
@@ -92,7 +92,7 @@ function updateScatterPlot(minYear, maxYear, country) {
         .data(filteredData) // Use filteredData aqui
 
       circles.transition()
-      .duration(1000)
+      .duration(500)
       .attr("cx", function (d) {
         return x(d.disasters_per_area);
       })
@@ -149,8 +149,7 @@ function updateScatterPlot(minYear, maxYear, country) {
         .attr("y", height)
         .attr("height", 0)
         .remove();
-    }
-  );
+
 
 }
 // Function to create scatterplot
@@ -177,6 +176,7 @@ function createScatterPlot(minYear, maxYear, country) {
   // read csv
   d3.csv("../satinize_dataset/pre-processing/disasters_per_country.csv").then(
     function (data) {
+      if (scatterplot_data === undefined) scatterplot_data = data
       var filteredData = processData(data, minYear, maxYear);
 
       var maxY = d3.max(filteredData, function (d) {
