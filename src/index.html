@@ -10,6 +10,8 @@
   <script src="script.js"></script>
   <script src="./pkg/jquery.min.js">
   </script>
+  <script src="./pkg/topojson-client.min.js">
+  </script>
   <script src="./pkg/foundation.min.js" crossorigin="anonymous">
   </script>
 </head>
@@ -32,8 +34,8 @@
   <!-- The main grid layout of the dashboard -->
   <main class="dashboard">
     <div class="leftmenu shadow-lg rounded-2">
-      <div id="choropleth-container" style="position: relative">
-
+      <div id="choropleth" style="position: relative">
+          <script src="choropleth.js"></script>
       </div>
 
 

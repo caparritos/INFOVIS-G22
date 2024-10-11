@@ -998,7 +998,7 @@ body {
   grid-row: span 3;
   grid-column: 1;
   /* Faz com que a .leftmenu ocupe duas colunas */
-  max-width: 900px;
+  max-width: 823px;
   /* Largura máxima */
   border: none;
 }
