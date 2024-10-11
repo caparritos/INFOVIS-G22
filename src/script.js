@@ -2,7 +2,12 @@
 // Declare global variables for year range
 var minYear = 2000;
 var maxYear = 2024;
+var country  = null;
 
+function updateCountry(newCountry) {
+  country = newCountry;  // Atualiza o valor global de 'country'
+  createRadialChart(minYear, maxYear, country);  
+}
 
 // slider prevent max > min
 function updateSlider(slider, type) {
@@ -31,8 +36,8 @@ function updateSlider(slider, type) {
         slider.parentNode.style.setProperty('--text-value-b', JSON.stringify(sliderMin.value));
       }
     }
-    updateScatterPlot(sliderMin.value, sliderMax.value);
-    updateRadialChart(sliderMin.value, sliderMax.value);
+    updateScatterPlot(sliderMin.value, sliderMax.value,country);
+    updateRadialChart(sliderMin.value, sliderMax.value,country);
   }
   
 

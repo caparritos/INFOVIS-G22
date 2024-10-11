@@ -240,5 +240,5 @@ function getOuterRadius(index, numArcs, arcWidth) {
 
 // load graph
 document.addEventListener("DOMContentLoaded", function () {
-  createRadialChart(minYear, maxYear);
+  createRadialChart(minYear, maxYear,country);
 });

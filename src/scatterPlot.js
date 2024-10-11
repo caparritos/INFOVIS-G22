@@ -1,6 +1,6 @@
 //call fucntion with new parameters
-function updateScatterPlot(minYear, maxYear) {
-  createScatterPlot(minYear, maxYear);
+function updateScatterPlot(minYear, maxYear,country) {
+  createScatterPlot(minYear, maxYear,country);
 }
 
 function processData(data, minYear, maxYear) {
@@ -32,8 +32,8 @@ function processData(data, minYear, maxYear) {
 }
 
 // Function to create scatterplot
-function createScatterPlot(minYear, maxYear) {
-  let selectedCountry = null; 
+function createScatterPlot(minYear, maxYear,country) {
+  let selectedCountry = country; 
   // Remove svg if exste to avoid sobreposition
   d3.select("#scatterplot").select("svg").remove();
 
@@ -152,6 +152,7 @@ function createScatterPlot(minYear, maxYear) {
         })
         .on("click", (event, d) => {
           selectedCountry = d.Country; // Atualiza o país selecionado
+          updateCountry(selectedCountry);
           updateRadialChart(minYear, maxYear, selectedCountry); // Atualiza o gráfico radial
 
         // Atualiza a cor dos círculos
