@@ -4,6 +4,15 @@ var minYear = 2000;
 var maxYear = 2024;
 var country  = null;
 var svgScatterplot; // Variável global para armazenar o SVG
+var variable = "disaster_counts" // "disaster_counts" or "death_counts"
+
+function changeVariable() {
+  if (variable === "disaster_counts"){
+    variable = "death_counts"
+  } else {
+    variable = "disaster_counts"
+  }
+}
 
 function updateCountry(newCountry) {
   country = newCountry;  // Atualiza o valor global de 'country'
