@@ -279,6 +279,7 @@ function createScatterPlot(minYear, maxYear, country) {
           selectedCountry = d.Country; // Atualiza o país selecionado
           updateCountry(selectedCountry);
           updateRadialChart(minYear, maxYear, selectedCountry); // Atualiza o gráfico radial
+          updateChoropleth(minYear, maxYear, selectedCountry)
 
           // Atualiza a cor dos círculos
           svg.selectAll("circle")

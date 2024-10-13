@@ -48,6 +48,7 @@ function updateSlider(slider, type) {
     }
     updateScatterPlot(sliderMin.value, sliderMax.value,country);
     updateRadialChart(sliderMin.value, sliderMax.value,country);
+    updateChoropleth(sliderMin.value, sliderMax.value,country);
   }
   
 
