@@ -982,7 +982,6 @@ body {
 
 .dashboard>div {
   border: 1px solid #ccc;
-  padding: 10px;
   background-color: #f9f9f9;
   display: flex;
   justify-content: center;
@@ -998,7 +997,7 @@ body {
   grid-row: span 3;
   grid-column: 1;
   /* Faz com que a .leftmenu ocupe duas colunas */
-  max-width: 823px;
+  max-width: 830px;
   /* Largura máxima */
   border: none;
 }

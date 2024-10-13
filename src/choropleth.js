@@ -40,7 +40,7 @@ function drawMap(minYear, maxYear, country) {
   // O svg
   const svg = d3.select("#choropleth").append("svg")
     .attr("width", 830)
-    .attr("height", 600);
+    .attr("height", 400);
 
   const width = 800;
   const height = 600;
