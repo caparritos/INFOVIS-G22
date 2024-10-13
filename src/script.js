@@ -3,20 +3,13 @@
 var minYear = 2000;
 var maxYear = 2024;
 var country  = null;
-var svgScatterplot; // Variável global para armazenar o SVG
-var variable = "disaster_counts" // "disaster_counts" or "death_counts"
-
-function changeVariable() {
-  if (variable === "disaster_counts"){
-    variable = "death_counts"
-  } else {
-    variable = "disaster_counts"
-  }
-}
+var globalFilter = "num_disasters" // "disaster_counts" or "total_deaths"
 
 function updateCountry(newCountry) {
   country = newCountry;  // Atualiza o valor global de 'country'
   updateRadialChart(minYear, maxYear, country);  
+  updateScatterPlot(minYear, maxYear, country);  
+  updateChoropleth(minYear, maxYear, country);  
 }
 
 // slider prevent max > min
@@ -50,6 +43,21 @@ function updateSlider(slider, type) {
     updateRadialChart(sliderMin.value, sliderMax.value,country);
     updateChoropleth(sliderMin.value, sliderMax.value,country);
   }
+
+  // Função para lidar com a mudança de filtro
+function changeFilter(button, filter) {
+  console.log(filter)
+  globalFilter = filter;
+
+  // Remove a classe 'active' de todos os botões
+  const buttons = document.querySelectorAll('.globalFilter-button');
+  buttons.forEach(btn => btn.classList.remove('active'));
+
+  // Adiciona a classe 'active' ao botão clicado
+  button.classList.add('active');
+  updateChoropleth(minYear, maxYear, country,filter)
+  updateScatterPlot(minYear, maxYear, country,globalFilter)
+}
   
 
 

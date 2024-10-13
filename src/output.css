@@ -830,10 +830,10 @@ video {
   -webkit-appearance: none;
   width: 100%;
   height: var(--thumb-size);
-  margin: 0;
+  margin: -9px;
   position: absolute;
   left: 0;
-  top: calc(50% - Max(var(--track-height), var(--thumb-size)) / 2 + calc(var(--ticks-gap) / 2 * var(--flip-y, -1)));
+  top: 1.5px;
   cursor: grab;
   outline: none;
   background: none;
@@ -996,11 +996,11 @@ body {
 .leftmenu {
   grid-row: span 3;
   grid-column: 1;
-  /* Faz com que a .leftmenu ocupe duas colunas */
-  max-width: 830px;
+  width: 830px;
   /* Largura máxima */
   border: none;
 }
+
 
 .visualization {
   max-width: 700px;
@@ -1077,3 +1077,39 @@ path.arc:hover {
   z-index: 10;
   /* Garante que o tooltip fique acima de outros elementos */
 }
+/* Estilos gerais para os botões */
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Espaço entre os botões */
+  margin: 20px 0; /* Margem para separar os botões do conteúdo ao redor */
+}
+
+.globalFilter-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #007BFF; /* Azul padrão */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Suaviza as transições */
+}
+
+.globalFilter-button:hover {
+  background-color: #0056b3; /* Azul mais escuro no hover */
+  transform: scale(1.05); /* Leve aumento no tamanho ao passar o mouse */
+}
+
+.globalFilter-button:active {
+  background-color: #004080; /* Azul ainda mais escuro ao clicar */
+  transform: scale(1); /* Retorna ao tamanho original ao clicar */
+}
+
+/* Estilo específico para o botão ativo */
+.globalFilter-button.active {
+  background-color: #28a745; /* Cor verde para o botão ativo */
+  color: white;
+}
+
