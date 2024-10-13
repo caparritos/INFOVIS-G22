@@ -70,7 +70,7 @@ function updateRadialChart(minYear, maxYear, country) {
 }
 
 function updateRadialChartSingle(svg, data, oldData, arc, numArcs, arcWidth, arcPadding, ticks, scale, color) {
-	let tooltip = d3.select('#radialChart').select('div')
+	let tooltip = d3.select('#radialChartTooltip')
 
 	// Radial Axis
 	const radialAxis = svg.select('.r')

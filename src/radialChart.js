@@ -40,7 +40,8 @@ function createRadialChart(minYear, maxYear, country) {
 
 
   // SELECT WHERE TO PUT TOOLTIP DIV
-  let tooltip = d3.select('#radialChart').append('div')
+  let tooltip = d3.select('html').append('div')
+    .attr("id", "radialChartTooltip")
     .attr('class', 'tooltip')
     .style('position', 'absolute')
     .style('display', 'none');
@@ -196,7 +197,7 @@ function createRadialChart(minYear, maxYear, country) {
       .attrTween('d', (d, i) => arcTween(d, i, arcTechnological));
 
     // Mouse actions 
-    arcs2.on('mousemove', (event, d) => showTooltip(event, d, tooltip, svg));
+    arcs2.on('mousemove', (event, d) => showTooltip(event, d, tooltip));
     arcs2.on('mouseout', (e,d) => hideTooltip(tooltip));
 
     radialChartOldData["natural"] = groupedDataNatural
@@ -213,14 +214,12 @@ function arcTween(d, i, arc, initial=0) {
 
 
 //  TOOLTIP FUNCTIONS
-function showTooltip(event, d, tooltip, svg) {
-  const svgPosition = svg.node().getBoundingClientRect();
-
+function showTooltip(event, d, tooltip) {
   tooltip.html(`<strong>${d.frequency}</strong>`)
     .style("display", "block")
     .style("position", "absolute")
-    .style("left", (event.clientX - svgPosition.left + 70) + "px")
-    .style("top", (event.clientY - svgPosition.top - 0) + "px");
+    .style("left", (event.clientX + 20) + "px")
+    .style("top", (event.clientY + 10) + "px");
 }
 
 
