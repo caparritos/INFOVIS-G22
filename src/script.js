@@ -46,7 +46,6 @@ function updateSlider(slider, type) {
 
   // Função para lidar com a mudança de filtro
 function changeFilter(button, filter) {
-  console.log(filter)
   globalFilter = filter;
 
   // Remove a classe 'active' de todos os botões
@@ -56,7 +55,7 @@ function changeFilter(button, filter) {
   // Adiciona a classe 'active' ao botão clicado
   button.classList.add('active');
   updateChoropleth(minYear, maxYear, country,filter)
-  updateScatterPlot(minYear, maxYear, country,globalFilter)
+  updateScatterPlot(minYear, maxYear, country,filter)
 }
   
 

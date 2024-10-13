@@ -67,7 +67,7 @@ function drawMap(minYear, maxYear, country,globalFilter) {
     d3.json("./pkg/world.geojson"),
     d3.csv("../satinize_dataset/pre-processing/disasters_per_country.csv", d => {
       // Converta os valores necessários para números
-      d.total_deaths = +d.total_deaths;  
+      d.num_disasters = +d.num_disasters;  
       return d;
     })
   ]).then(([topo, disasters]) => {
@@ -167,5 +167,5 @@ function drawMap(minYear, maxYear, country,globalFilter) {
 }
 // Executa o drawMap quando o DOM estiver totalmente carregado
 document.addEventListener("DOMContentLoaded", function () {
-  drawMap(minYear,maxYear, country); // Exemplo de chamada para desenhar o mapa
+  drawMap(minYear,maxYear, country,globalFilter); // Exemplo de chamada para desenhar o mapa
 });
