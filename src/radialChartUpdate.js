@@ -61,15 +61,15 @@ function updateRadialChart(minYear, maxYear, country) {
 
 	const oldDataNatural = radialChartOldData["country"] == country ? radialChartOldData["natural"] : undefined;
 	const oldDataTech = radialChartOldData["country"] == country ? radialChartOldData["natural"] : undefined;
-	updateRadialChartSingle(svg, groupedDataNatural, /* oldDataNatural */ undefined, arcNatural, numArcsNatural, arcWidthNatural, arcPaddingNatural, ticksNatural, scaleNatural)
-	updateRadialChartSingle(svg2, groupedDataTechnological, /* oldDataTech */ undefined, arcTechnological, numArcsTechnological, arcWidthTechnological, arcPaddingTechnological, ticksTechnological, scaleTechnological)
+	updateRadialChartSingle(svg, groupedDataNatural, /* oldDataNatural */ undefined, arcNatural, numArcsNatural, arcWidthNatural, arcPaddingNatural, ticksNatural, scaleNatural, colorNatural)
+	updateRadialChartSingle(svg2, groupedDataTechnological, /* oldDataTech */ undefined, arcTechnological, numArcsTechnological, arcWidthTechnological, arcPaddingTechnological, ticksTechnological, scaleTechnological, colorTechnological)
 
 	radialChartOldData["natural"] = groupedDataNatural
 	radialChartOldData["tech"] = groupedDataTechnological
 	radialChartOldData["country"] = country
 }
 
-function updateRadialChartSingle(svg, data, oldData, arc, numArcs, arcWidth, arcPadding, ticks, scale) {
+function updateRadialChartSingle(svg, data, oldData, arc, numArcs, arcWidth, arcPadding, ticks, scale, color) {
 	let tooltip = d3.select('#radialChart').select('div')
 
 	// Radial Axis
@@ -134,7 +134,7 @@ function updateRadialChartSingle(svg, data, oldData, arc, numArcs, arcWidth, arc
 		.attrTween('d', (d, i) => arcTween(d, i, arc, oldData?.[i].frequency ?? 0));
 	const newArcs = arcs.enter().append('path')
 		.attr('class', 'arc')
-		.style('fill', colorNatural);
+		.style('fill', color);
 
 	newArcs.transition()
 		.delay((d, i) => i * 200)
