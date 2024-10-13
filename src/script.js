@@ -16,7 +16,7 @@ function changeVariable() {
 
 function updateCountry(newCountry) {
   country = newCountry;  // Atualiza o valor global de 'country'
-  createRadialChart(minYear, maxYear, country);  
+  updateRadialChart(minYear, maxYear, country);  
 }
 
 // slider prevent max > min
