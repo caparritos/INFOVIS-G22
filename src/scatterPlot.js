@@ -63,9 +63,10 @@ function updateScatterPlot(minYear, maxYear,country) {
   
         // axis X
         var x = d3
-          .scaleLinear()
-          .domain([0, parseInt(maxX) * 1.1])
-          .range([0, width]);
+        .scaleLog()
+        .base(10)
+        .domain([1, 40000])
+        .range([0, width]);
   
         // axis Y
         var y = d3.scaleLog()
@@ -78,7 +79,7 @@ function updateScatterPlot(minYear, maxYear,country) {
           .select("#x-axis-label")
           .transition()
           .duration(1000)
-          .call(d3.axisBottom(x).tickFormat(formatAbbreviation).ticks(5))
+          .call(d3.axisBottom(x).ticks(15))
           .style("font-size", "10px");
   
         var tooltip = d3.select("#tooltip"); // Select tooltip
@@ -199,23 +200,25 @@ function updateScatterPlot(minYear, maxYear,country) {
         var maxX = d3.max(filteredData, function (d) {
           return d.disasters_per_area;
         });
+
+        console.log(maxX)
   
         var formatAbbreviation = d3.format(".2s");
-  
         // axis X
         var x = d3
-          .scaleLinear()
-          .domain([0, parseInt(maxX) * 1.1])
+          .scaleLog()
+          .base(10)
+          .domain([1, 40000])
           .range([0, width]);
   
-  
-        svg
+          svg
           .append("g")
           .attr("id", "x-axis-label")
           .attr("transform", "translate(0," + height + ")")
-          .call(d3.axisBottom(x).tickFormat(formatAbbreviation).ticks(5))
-          .style("font-size", "10px");
-  
+          .call(d3.axisBottom(x).ticks(15 )) 
+          .selectAll('text')
+          .style("font-size", "10px")
+          .style("text-anchor", "end");
         // axis Y
         var y = d3.scaleLog()
           .base(10)

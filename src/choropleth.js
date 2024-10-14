@@ -55,8 +55,8 @@ function drawMap(minYear, maxYear, country,globalFilter) {
     .domain([0, 10, 50,100,200,400,800,1600])  // Defina os limites de desastres conforme necessário
       .range(d3.schemeBuPu[8])
     :d3.scaleThreshold()
-      .domain([0, 10, 50,100,10000,50000,100000,250000])  // Defina os limites de desastres conforme necessário
-      .range(d3.schemePuRd[8]);
+      .domain([0,500,10000,50000,70000,80000,90000,100000,150000])  // Defina os limites de desastres conforme necessário
+      .range(d3.schemePuRd[9]);
 
   // Criação de um grupo para aplicar o zoom
   const g = svg.append("g");
@@ -149,7 +149,7 @@ function drawMap(minYear, maxYear, country,globalFilter) {
         // Atualiza os gráficos
         updateCountry(selectedCountry);
         updateRadialChart(minYear, maxYear, selectedCountry);
-        updateScatterPlot(minYear, maxYear, selectedCountry,globalFilter);
+        updateScatterPlot(minYear, maxYear, selectedCountry);
     });
 // Criar um grupo para a escala
 const legendGroup = svg.append("g")

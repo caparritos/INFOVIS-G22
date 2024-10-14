@@ -55,7 +55,6 @@ function changeFilter(button, filter) {
   // Adiciona a classe 'active' ao botão clicado
   button.classList.add('active');
   updateChoropleth(minYear, maxYear, country,filter)
-  updateScatterPlot(minYear, maxYear, country,filter)
 }
   
 
