@@ -36,7 +36,7 @@ function processDataCloropleth(data, minYear, maxYear) {
 function drawMap(minYear, maxYear, country,globalFilter) {
   d3.select("#choropleth").select("svg").remove();
   const svg = d3.select("#choropleth").append("svg")
-    .attr("width", 830)
+    .attr("width",730)
     .attr("height", 400);
 
   const width = 830;
@@ -52,10 +52,11 @@ function drawMap(minYear, maxYear, country,globalFilter) {
 
   // Escala de cores baseada no número de desastres
   const colorScale = globalFilter === 'num_disasters'? d3.scaleThreshold()
-    .domain([0, 10, 50,100,200,300,400])  // Defina os limites de desastres conforme necessário
-      .range(d3.schemeBuPu[7]):d3.scaleThreshold()
-      .domain([0, 10, 50,100,200,300,400])  // Defina os limites de desastres conforme necessário
-      .range(d3.schemePuRd[7]);
+    .domain([0, 10, 50,100,200,400,800,1600])  // Defina os limites de desastres conforme necessário
+      .range(d3.schemeBuPu[8])
+    :d3.scaleThreshold()
+      .domain([0, 10, 50,100,10000,50000,100000,250000])  // Defina os limites de desastres conforme necessário
+      .range(d3.schemePuRd[8]);
 
   // Criação de um grupo para aplicar o zoom
   const g = svg.append("g");
@@ -103,7 +104,6 @@ function drawMap(minYear, maxYear, country,globalFilter) {
         var count =countryData == '' ? 0: countryData[0].num_disasters;
         var text ='Disasters';
         if (globalFilter == 'total_deaths'){
-          console.log('data')
           count = countryData == '' ? 0: countryData[0].total_deaths;
           text = 'Deaths'}
         
@@ -149,9 +149,44 @@ function drawMap(minYear, maxYear, country,globalFilter) {
         // Atualiza os gráficos
         updateCountry(selectedCountry);
         updateRadialChart(minYear, maxYear, selectedCountry);
-        updateScatterPlot(minYear, maxYear, selectedCountry);
+        updateScatterPlot(minYear, maxYear, selectedCountry,globalFilter);
     });
-    
+// Criar um grupo para a escala
+const legendGroup = svg.append("g")
+    .attr("transform", "translate(30, 40)"); // Ajuste a posição conforme necessário
+
+const legendHeight = 300;
+const legendWidth = 20;
+
+// Desenhar retângulos coloridos para a escala
+colorScale.range().forEach((color, i) => {
+    legendGroup.append("rect")
+        .attr("x", 0)
+        .attr("y", (legendHeight / colorScale.range().length) * i) // Distribui verticalmente
+        .attr("width", legendWidth)
+        .attr("height", legendHeight / colorScale.range().length) // Altura proporcional à barra
+        .attr("fill", color);
+});
+
+// Adicionar rótulos à escala
+const ticks = colorScale.domain(); // Valores para os rótulos
+ticks.forEach((tick, i) => {
+    // Adiciona rótulos somente se não for o último
+    if (i < ticks.length - 1) {
+        legendGroup.append("text")
+            .attr("x", legendWidth + 5) // Posição do rótulo à direita dos retângulos
+            .attr("y", (legendHeight / colorScale.range().length) * (i + 0.5)) // Centraliza verticalmente
+            .attr("dy", ".35em") // Alinha verticalmente ao centro
+            .text(tick);
+    }
+});
+
+// Adicionar rótulo do valor máximo
+legendGroup.append("text")
+    .attr("x", legendWidth + 5)
+    .attr("y", legendHeight - 5) // Último rótulo na parte inferior
+    .text(d3.max(ticks)); // O maior valor no domínio
+
       // Add zoom functionality
       const zoom = d3.zoom()
         .scaleExtent([1, 8])  // Define a escala mínima e máxima
@@ -160,6 +195,9 @@ function drawMap(minYear, maxYear, country,globalFilter) {
         });
 
       svg.call(zoom);  // Aplica o zoom ao SVG
+
+
+
   })
   .catch(err => {
     console.error("Error loading the data: ", err);

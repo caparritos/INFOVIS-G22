@@ -20,11 +20,13 @@ function processData(data, minYear, maxYear) {
       acc[country] = {
         Country: country,
         disasters_per_area: 0,
+        num_disasters:0,
         total_deaths: 0,
       };
     }
 
     acc[country].disasters_per_area += +current.disasters_per_area;
+    acc[country].num_disasters += +current.num_disasters;
     acc[country].total_deaths += +current.total_deaths == 0 ? 1 : +current.total_deaths; //> 0 ? Math.log(+current.total_deaths) : 0;
 
     return acc;
@@ -34,9 +36,8 @@ function processData(data, minYear, maxYear) {
 }
 
 // Function to create scatterplot
-function updateScatterPlot(minYear, maxYear, country) {
-  let selectedCountry = country;
-
+function updateScatterPlot(minYear, maxYear, country,globalFilter) {
+  //let selectedCountry = country;
   // Define margins
   var margin = { top: 5, right: 15, bottom: 50, left: 60 },
     width = 600,
@@ -47,15 +48,13 @@ function updateScatterPlot(minYear, maxYear, country) {
     .select("#scatterplot")
     .select("svg")
 
-
-
-  // read csv
  
       var filteredData = processData(scatterplot_data, minYear, maxYear);
 
       var maxY = d3.max(filteredData, function (d) {
-        return d.total_deaths;
+        return d[globalFilter];
       });
+
       var maxX = d3.max(filteredData, function (d) {
         return d.disasters_per_area;
       });
@@ -69,10 +68,45 @@ function updateScatterPlot(minYear, maxYear, country) {
         .range([0, width]);
 
       // axis Y
-      var y = d3.scaleLog()
-        .base(10)
-        .domain([1, 250000])
+      var y = undefined;
+      if(globalFilter =='num_disasters'){
+        y = d3.scaleLinear()
+        .domain([1, parseInt(maxY) * 1.1])
         .range([height, 0]);
+        svg
+        .select("#y-axis-label")
+        .transition()
+        .duration(500)
+        .call(d3.axisLeft(y)
+        .ticks(5)
+        .tickFormat(d3.format("~")))
+        svg
+        .select("#y-nameAxis")
+        .transition()
+        .duration(500)
+        .text("Number of Disasters");
+      }
+      else{
+        y= d3.scaleLog()
+        .base(10)
+        .domain([1, parseInt(maxY) * 1.1])
+        .range([height, 0]);
+
+        svg
+        .select("#y-axis-label")
+        .transition()
+        .duration(500)
+        .call(d3.axisLeft(y)
+        .ticks(5)
+        .tickFormat(d3.format(".1e")))
+        
+        svg
+        .select("#y-nameAxis")
+        .transition()
+        .duration(500)
+        .text("Total Deaths (logarithmic)");
+
+      }
 
 
       svg
@@ -81,6 +115,10 @@ function updateScatterPlot(minYear, maxYear, country) {
         .duration(500)
         .call(d3.axisBottom(x).tickFormat(formatAbbreviation).ticks(5))
         .style("font-size", "10px");
+      
+        
+
+        
 
       var tooltip = d3.select("#tooltip"); // Select tooltip
 
@@ -97,7 +135,7 @@ function updateScatterPlot(minYear, maxYear, country) {
         return x(d.disasters_per_area);
       })
       .attr("cy", function (d) {
-        return y(d.total_deaths);
+        return y(d[globalFilter]);
       })
       .style("fill", (d) => (d.Country === selectedCountry ? "blue" : "#69b3a2"))
         
@@ -108,18 +146,20 @@ function updateScatterPlot(minYear, maxYear, country) {
           return x(d.disasters_per_area);
         })
         .attr("cy", function (d) {
-          return y(d.total_deaths);
+          return y(d[globalFilter]);
         })
         .attr("r", 3)
         .style("fill", (d) => (d.Country === selectedCountry ? "blue" : "#69b3a2"))
         .on("mouseover", function (event, d) {
+          console.log('cum',event)
           tooltip.transition().duration(200).style("opacity", 0.9);
-
+          var text = globalFilter === 'num_disasters' ? 'Total Disasters': 'Total Deaths';
+          var number = globalFilter === 'num_disasters' ? d[globalFilter]: d[globalFilter].toExponential(2);
           tooltip
             .html(
               `<strong>${d.Country}</strong><br>` + // Display country
               `Disasters density: ${d.disasters_per_area.toFixed(1)}<br>` + // Show disasters per area
-              `Total Deaths: ${d.total_deaths.toExponential(2)}` // Show total deaths in scientific notation
+              `${text}: ${number}` // Show total deaths in scientific notation
             )
             .style("left", (event.clientX + 10) + "px")
             .style("top", (event.clientY - 20) + "px");
@@ -134,13 +174,29 @@ function updateScatterPlot(minYear, maxYear, country) {
           }
         })
         .on("click", (event, d) => {
-          selectedCountry = d.Country; // Atualiza o país selecionado
-          updateCountry(selectedCountry);
-          updateRadialChart(minYear, maxYear, selectedCountry); // Atualiza o gráfico radial
-
-          // Atualiza a cor dos círculos
-          svg.selectAll("circle")
-            .style("fill", (d) => (d.Country === selectedCountry ? "blue" : "#69b3a2"));
+          if (selectedCountry === d.Country) {
+            // Se o país já está selecionado, deselect
+            selectedCountry = null; // Reseta a seleção
+            
+            // Atualiza a cor dos círculos para o estado não selecionado
+            svg.selectAll("circle")
+                .style("fill", "#69b3a2"); // Cor padrão dos círculos
+            
+            // Aqui você pode querer também limpar ou resetar outros gráficos, se necessário
+            updateCountry(null); // Atualiza o país, se necessário
+            updateRadialChart(minYear, maxYear, null); // Atualiza o gráfico radial com valores nulos
+            updateChoropleth(minYear, maxYear, null, globalFilter); // Atualiza o choropleth com valores nulos
+        } else {
+            // Se o país não está selecionado, seleciona-o
+            selectedCountry = d.Country; // Atualiza o país selecionado
+            updateCountry(selectedCountry);
+            updateRadialChart(minYear, maxYear, selectedCountry); // Atualiza o gráfico radial
+            updateChoropleth(minYear, maxYear, selectedCountry, globalFilter); // Atualiza o choropleth
+    
+            // Atualiza a cor dos círculos
+            svg.selectAll("circle")
+                .style("fill", (d) => (d.Country === selectedCountry ? "blue" : "#69b3a2"));
+        }
         });
 
       circles.exit()
@@ -154,7 +210,7 @@ function updateScatterPlot(minYear, maxYear, country) {
 }
 // Function to create scatterplot
 function createScatterPlot(minYear, maxYear, country) {
-  let selectedCountry = country;
+  // let selectedCountry = country;
   // Remove svg if exste to avoid sobreposition
   d3.select("#scatterplot").select("svg").remove();
 
@@ -180,7 +236,7 @@ function createScatterPlot(minYear, maxYear, country) {
       var filteredData = processData(data, minYear, maxYear);
 
       var maxY = d3.max(filteredData, function (d) {
-        return d.total_deaths;
+        return d[globalFilter];
       });
       var maxX = d3.max(filteredData, function (d) {
         return d.disasters_per_area;
@@ -203,17 +259,15 @@ function createScatterPlot(minYear, maxYear, country) {
         .style("font-size", "10px");
 
       // axis Y
-      var y = d3.scaleLog()
-        .base(10)
-        .domain([1, 250000])
+      var y = d3.scaleLinear()
+        .domain([1, parseInt(maxY) * 1.1])
         .range([height, 0]);
 
-      // Add Y-axis with real (linear) values displayed
       svg.append("g")
         .attr("id", "y-axis-label")
         .call(d3.axisLeft(y)
           .ticks(5)
-          .tickFormat(d3.format(".1e"))) // Display in scientific notation
+          .tickFormat(d3.format("~"))) // Display in scientific notation
         .style("font-size", "10px");
 
       // Name of axis X
@@ -228,12 +282,13 @@ function createScatterPlot(minYear, maxYear, country) {
       // Name of axis Y
       svg
         .append("text")
+        .attr('id','y-nameAxis')
         .attr("transform", "rotate(-90)")
         .attr("y", 0 - margin.left + 20)
         .attr("x", 0 - height / 2)
         .attr("dy", "-.5em")
         .style("text-anchor", "middle")
-        .text("Total Deaths (logarithmic)");
+        .text("Number of Disasters");
 
       var tooltip = d3.select("#tooltip"); // Select tooltip
 
@@ -250,18 +305,19 @@ function createScatterPlot(minYear, maxYear, country) {
           return x(d.disasters_per_area);
         })
         .attr("cy", function (d) {
-          return y(d.total_deaths);
+          return y(d[globalFilter]);
         })
         .attr("r", 3)
         .style("fill", (d) => (d.Country === selectedCountry ? "blue" : "#69b3a2"))
         .on("mouseover", function (event, d) {
           tooltip.transition().duration(200).style("opacity", 0.9);
-
+          var text = globalFilter === 'num_disasters' ? 'Total Disasters': 'Total Deaths';
+          var number = globalFilter === 'num_disasters' ? d[globalFilter]: d[globalFilter].toExponential(2);
           tooltip
             .html(
               `<strong>${d.Country}</strong><br>` + // Display country
               `Disasters density: ${d.disasters_per_area.toFixed(1)}<br>` + // Show disasters per area
-              `Total Deaths: ${d.total_deaths.toExponential(2)}` // Show total deaths in scientific notation
+              `${text}: ${number}` // Show total deaths in scientific notation
             )
             .style("left", (event.clientX + 10) + "px")
             .style("top", (event.clientY - 20) + "px");
@@ -276,14 +332,29 @@ function createScatterPlot(minYear, maxYear, country) {
           }
         })
         .on("click", (event, d) => {
-          selectedCountry = d.Country; // Atualiza o país selecionado
-          updateCountry(selectedCountry);
-          updateRadialChart(minYear, maxYear, selectedCountry); // Atualiza o gráfico radial
-          updateChoropleth(minYear, maxYear, selectedCountry)
-
-          // Atualiza a cor dos círculos
-          svg.selectAll("circle")
-            .style("fill", (d) => (d.Country === selectedCountry ? "blue" : "#69b3a2"));
+          if (selectedCountry === d.Country) {
+            // Se o país já está selecionado, deselect
+            selectedCountry = null; // Reseta a seleção
+            
+            // Atualiza a cor dos círculos para o estado não selecionado
+            svg.selectAll("circle")
+                .style("fill", "#69b3a2"); // Cor padrão dos círculos
+            
+            // Aqui você pode querer também limpar ou resetar outros gráficos, se necessário
+            updateCountry(null); // Atualiza o país, se necessário
+            updateRadialChart(minYear, maxYear, null); // Atualiza o gráfico radial com valores nulos
+            updateChoropleth(minYear, maxYear, null, globalFilter); // Atualiza o choropleth com valores nulos
+        } else {
+            // Se o país não está selecionado, seleciona-o
+            selectedCountry = d.Country; // Atualiza o país selecionado
+            updateCountry(selectedCountry);
+            updateRadialChart(minYear, maxYear, selectedCountry); // Atualiza o gráfico radial
+            updateChoropleth(minYear, maxYear, selectedCountry, globalFilter); // Atualiza o choropleth
+    
+            // Atualiza a cor dos círculos
+            svg.selectAll("circle")
+                .style("fill", (d) => (d.Country === selectedCountry ? "blue" : "#69b3a2"));
+        }
         });
     }
   );
@@ -291,5 +362,5 @@ function createScatterPlot(minYear, maxYear, country) {
 
 // load graph
 document.addEventListener("DOMContentLoaded", function () {
-  createScatterPlot(minYear, maxYear);
+  createScatterPlot(minYear, maxYear,country);
 });

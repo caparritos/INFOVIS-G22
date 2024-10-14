@@ -8,8 +8,8 @@ var globalFilter = "num_disasters" // "disaster_counts" or "total_deaths"
 function updateCountry(newCountry) {
   country = newCountry;  // Atualiza o valor global de 'country'
   updateRadialChart(minYear, maxYear, country);  
-  updateScatterPlot(minYear, maxYear, country);  
-  updateChoropleth(minYear, maxYear, country);  
+  updateScatterPlot(minYear, maxYear, country,globalFilter);  
+  updateChoropleth(minYear, maxYear, country,globalFilter);  
 }
 
 // slider prevent max > min
@@ -39,9 +39,9 @@ function updateSlider(slider, type) {
         slider.parentNode.style.setProperty('--text-value-b', JSON.stringify(sliderMin.value));
       }
     }
-    updateScatterPlot(sliderMin.value, sliderMax.value,country);
-    updateRadialChart(sliderMin.value, sliderMax.value,country);
-    updateChoropleth(sliderMin.value, sliderMax.value,country);
+    updateScatterPlot(sliderMin.value, sliderMax.value,country,globalFilter);
+    updateRadialChart(sliderMin.value, sliderMax.value,country,globalFilter);
+    updateChoropleth(sliderMin.value, sliderMax.value,country,globalFilter);
   }
 
   // Função para lidar com a mudança de filtro
