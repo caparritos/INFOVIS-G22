@@ -3,7 +3,7 @@
 var minYear = 2000;
 var maxYear = 2024;
 var country  = null;
-var globalFilter = "num_disasters" // "disaster_counts" or "total_deaths"
+var globalFilter = "num_disasters" // "num_disasters" or "total_deaths"
 
 function updateCountry(newCountry) {
   country = newCountry;  // Atualiza o valor global de 'country'
