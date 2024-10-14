@@ -119,7 +119,7 @@ function updateScatterPlot(minYear, maxYear,country) {
               .html(
                 `<strong>${d.Country}</strong><br>` + // Display country
                 `Disasters density: ${d.disasters_per_area.toFixed(1)}<br>` + // Show disasters per area
-                `Total Deaths: ${d.total_deaths.toExponential(2)}` // Show total deaths in scientific notation
+                `Total Deaths: ${d.total_deaths}` // Show total deaths in scientific notation
               )
               .style("left", (event.clientX + 10) + "px")
               .style("top", (event.clientY - 20) + "px");
@@ -278,7 +278,7 @@ function updateScatterPlot(minYear, maxYear,country) {
               .html(
                 `<strong>${d.Country}</strong><br>` + // Display country
                 `Disasters density: ${d.disasters_per_area.toFixed(1)}<br>` + // Show disasters per area
-                `Total Deaths: ${d.total_deaths.toExponential(2)}` // Show total deaths in scientific notation
+                `Total Deaths: ${d.total_deaths}` // Show total deaths in scientific notation
               )
               .style("left", (event.clientX + 10) + "px")
               .style("top", (event.clientY - 20) + "px");
