@@ -7,7 +7,7 @@ var globalFilter = "num_disasters" // "disaster_counts" or "total_deaths"
 
 function updateCountry(newCountry) {
   country = newCountry;  // Atualiza o valor global de 'country'
-  updateRadialChart(minYear, maxYear, country);  
+  updateRadialChart(minYear, maxYear, country,globalFilter);  
   updateScatterPlot(minYear, maxYear, country,globalFilter);  
   updateChoropleth(minYear, maxYear, country,globalFilter);  
 }
@@ -55,6 +55,7 @@ function changeFilter(button, filter) {
   // Adiciona a classe 'active' ao botão clicado
   button.classList.add('active');
   updateChoropleth(minYear, maxYear, country,filter)
+  updateRadialChart(minYear, maxYear, country,filter)
 }
   
 

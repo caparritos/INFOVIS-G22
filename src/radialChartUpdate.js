@@ -1,15 +1,17 @@
 //call fucntion with new parameters
 const radialChartOldData = {}
 
-function updateRadialChart(minYear, maxYear, country) {
+function updateRadialChart(minYear, maxYear, country,globalFilter) {
 	//createRadialChart(minYear, maxYear, country);
-
+	console.log(globalFilter)
 	let svg = d3.select('#radialChart').select('#naturalDisasters');
 	let svg2 = d3.select('#radialChart').select('#techDisasters');
 
 	data = radialChartData;
 	data.forEach(d => {
 		d.frequency = +d.frequency;
+		d.total_deaths = +d.total_deaths;
+
 	});
 
 	const dataNatural = data.filter(
@@ -21,22 +23,25 @@ function updateRadialChart(minYear, maxYear, country) {
 	// Group by 'DisasterSubgroup' and sum frequency
 	const groupedDataNatural = Array.from(d3.group(dataNatural, d => d.DisasterSubgroup), ([key, values]) => ({
 		DisasterSubgroup: key,
-		frequency: d3.sum(values, v => v.frequency)
-	})).sort((a, b) => b.frequency - a.frequency);;
+		num_disasters: d3.sum(values, v => v.frequency),
+		total_deaths: d3.sum(values,d => d.total_deaths)
+	})).sort((a, b) =>  b[globalFilter] - a[globalFilter]);;
 
 	const groupedDataTechnological = Array.from(d3.group(dataTechnological, d => d.DisasterSubgroup), ([key, values]) => ({
 		DisasterSubgroup: key,
-		frequency: d3.sum(values, v => v.frequency)
-	})).sort((a, b) => b.frequency - a.frequency);;
+		num_disasters: d3.sum(values, v => v.frequency),
+		total_deaths: d3.sum(values,d => d.total_deaths)
+	})).sort((a, b) =>  b[globalFilter] - a[globalFilter]);
 
+	
 	const scaleNatural = d3.scaleLinear()
-		.domain([0, d3.max(groupedDataNatural, d => d.frequency) * 1.1])
+		.domain([0, d3.max(groupedDataNatural, d => d[globalFilter]) * 1.1])
 		.range([0, (3 * PI) / 2]);
 
 	const scaleTechnological = d3.scaleLinear()
-		.domain([0, d3.max(groupedDataTechnological, d => d.frequency) * 1.1])
+		.domain([0, d3.max(groupedDataTechnological, d => d[globalFilter]) * 1.1])
 		.range([0, (3 * PI) / 2]);
-
+	
 	const ticksNatural = scaleNatural.ticks(numTicks).slice(0, -1);
 	const ticksTechnological = scaleTechnological.ticks(numTicks).slice(0, -1);
 	const keys = data.map(d => d.DisasterSubgroup);
@@ -129,9 +134,10 @@ function updateRadialChartSingle(svg, data, oldData, arc, numArcs, arcWidth, arc
 		.selectAll('path')
 		.data(data);
 
+			console.log(oldData)
 	arcs.transition()
 		.duration(1000)
-		.attrTween('d', (d, i) => arcTween(d, i, arc, oldData?.[i].frequency ?? 0));
+		.attrTween('d', (d, i) => arcTween(d, i, arc, oldData?.[i].num_disasters ?? 0));
 	const newArcs = arcs.enter().append('path')
 		.attr('class', 'arc')
 		.style('fill', color);

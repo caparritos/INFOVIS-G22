@@ -54,6 +54,7 @@ function createRadialChart(minYear, maxYear, country) {
     // Convert values to numbers
     data.forEach(d => {
       d.frequency = +d.frequency;
+      d.num_disasters = +d.num_disasters;
     });
 
     const dataNatural = data.filter(
@@ -65,20 +66,24 @@ function createRadialChart(minYear, maxYear, country) {
     // Group by 'DisasterSubgroup' and sum frequency
     const groupedDataNatural = Array.from(d3.group(dataNatural, d => d.DisasterSubgroup), ([key, values]) => ({
       DisasterSubgroup: key,
-      frequency: d3.sum(values, v => v.frequency)
-    })).sort((a, b) => b.frequency - a.frequency);;
+      num_disasters: d3.sum(values, v => v.frequency),
+		  total_deaths: d3.sum(values,d => d.total_deaths)
+
+    })).sort((a, b) => b[globalFilter] - a[globalFilter]);;
 
     const groupedDataTechnological = Array.from(d3.group(dataTechnological, d => d.DisasterSubgroup), ([key, values]) => ({
       DisasterSubgroup: key,
-      frequency: d3.sum(values, v => v.frequency)
-    })).sort((a, b) => b.frequency - a.frequency);;
+      num_disasters: d3.sum(values, v => v.frequency),
+		  total_deaths: d3.sum(values,d => d.total_deaths)
+
+    })).sort((a, b) =>  b[globalFilter] - a[globalFilter]);;
 
     const scaleNatural = d3.scaleLinear()
-      .domain([0, d3.max(groupedDataNatural, d => d.frequency) * 1.1])
+      .domain([0, d3.max(groupedDataNatural, d => d[globalFilter]) * 1.1])
       .range([0, (3 * PI) / 2]);
 
     const scaleTechnological = d3.scaleLinear()
-      .domain([0, d3.max(groupedDataTechnological, d => d.frequency) * 1.1])
+      .domain([0, d3.max(groupedDataTechnological, d => d[globalFilter]) * 1.1])
       .range([0, (3 * PI) / 2]);
 
     const ticksNatural = scaleNatural.ticks(numTicks).slice(0, -1);
@@ -208,14 +213,14 @@ function createRadialChart(minYear, maxYear, country) {
 }
 
 function arcTween(d, i, arc, initial=0) {
-  const interpolate = d3.interpolate(initial, d.frequency);
+  const interpolate = d3.interpolate(initial, d[globalFilter]);
   return t => arc({ value: interpolate(t) }, i);
 }
 
 
 //  TOOLTIP FUNCTIONS
 function showTooltip(event, d, tooltip) {
-  tooltip.html(`<strong>${d.frequency}</strong>`)
+  tooltip.html(`<strong>${d[globalFilter]}</strong>`)
     .style("display", "block")
     .style("position", "absolute")
     .style("left", (event.clientX + 20) + "px")

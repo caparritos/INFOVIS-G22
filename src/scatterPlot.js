@@ -144,13 +144,13 @@ function updateScatterPlot(minYear, maxYear,country) {
               
               // Aqui você pode querer também limpar ou resetar outros gráficos, se necessário
               updateCountry(null); // Atualiza o país, se necessário
-              updateRadialChart(minYear, maxYear, null); // Atualiza o gráfico radial com valores nulos
+              updateRadialChart(minYear, maxYear, null,globalFilter); // Atualiza o gráfico radial com valores nulos
               updateChoropleth(minYear, maxYear, null, globalFilter); // Atualiza o choropleth com valores nulos
           } else {
               // Se o país não está selecionado, seleciona-o
               selectedCountry = d.Country; // Atualiza o país selecionado
               updateCountry(selectedCountry);
-              updateRadialChart(minYear, maxYear, selectedCountry); // Atualiza o gráfico radial
+              updateRadialChart(minYear, maxYear, selectedCountry,globalFilter); // Atualiza o gráfico radial
               updateChoropleth(minYear, maxYear, selectedCountry, globalFilter); // Atualiza o choropleth
       
               // Atualiza a cor dos círculos
@@ -303,13 +303,13 @@ function updateScatterPlot(minYear, maxYear,country) {
               
               // Aqui você pode querer também limpar ou resetar outros gráficos, se necessário
               updateCountry(null); // Atualiza o país, se necessário
-              updateRadialChart(minYear, maxYear, null); // Atualiza o gráfico radial com valores nulos
+              updateRadialChart(minYear, maxYear, null,globalFilter); // Atualiza o gráfico radial com valores nulos
               updateChoropleth(minYear, maxYear, null, globalFilter); // Atualiza o choropleth com valores nulos
           } else {
               // Se o país não está selecionado, seleciona-o
               selectedCountry = d.Country; // Atualiza o país selecionado
               updateCountry(selectedCountry);
-              updateRadialChart(minYear, maxYear, selectedCountry); // Atualiza o gráfico radial
+              updateRadialChart(minYear, maxYear, selectedCountry,globalFilter); // Atualiza o gráfico radial
               updateChoropleth(minYear, maxYear, selectedCountry, globalFilter); // Atualiza o choropleth
       
               // Atualiza a cor dos círculos

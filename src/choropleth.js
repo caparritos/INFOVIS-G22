@@ -148,7 +148,7 @@ function drawMap(minYear, maxYear, country,globalFilter) {
     
         // Atualiza os gráficos
         updateCountry(selectedCountry);
-        updateRadialChart(minYear, maxYear, selectedCountry);
+        updateRadialChart(minYear, maxYear, selectedCountry,globalFilter);
         updateScatterPlot(minYear, maxYear, selectedCountry);
     });
 // Criar um grupo para a escala
