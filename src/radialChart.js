@@ -289,7 +289,7 @@ function showTooltip(event, d, tooltip) {
 
   tooltip
     .html(
-      `${d[globalFilter]} ${globalFilter === "num_disasters" ? "disasters" : "deaths"}`
+      `<strong>${d[globalFilter]} ${globalFilter === "num_disasters" ? "disasters" : "deaths"}</strong><br>`
     )
     .style("left", event.clientX + 10 + "px")
     .style("top", event.clientY - 20 + "px");
