@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "@types/d3": "^7.4.3"
-  },
-  "devDependencies": {
-    "tailwindcss": "^3.4.13"
-  }
-}
