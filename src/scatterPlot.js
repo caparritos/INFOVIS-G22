@@ -230,7 +230,7 @@ function updateScatterPlot(minYear, maxYear,country) {
           .attr("id", "y-axis-label")
           .call(d3.axisLeft(y)
             .ticks(5)
-            .tickFormat(d3.format(".1e"))) // Display in scientific notation
+            .tickFormat(d3.format(".1s"))) // Display in scientific notation
           .style("font-size", "10px");
   
         // Name of axis X
@@ -241,7 +241,7 @@ function updateScatterPlot(minYear, maxYear,country) {
             "translate(" + width / 2 + " ," + (height + margin.bottom - 10) + ")"
           )
           .style("text-anchor", "middle")
-          .text("Disaster density (disasters per 1000km2 for countries with area > 5000km2)");
+          .text("Disaster density logarithmic (disasters per 1000km2)");
         // Name of axis Y
         svg
           .append("text")
@@ -250,7 +250,7 @@ function updateScatterPlot(minYear, maxYear,country) {
           .attr("x", 0 - height / 2)
           .attr("dy", "-.5em")
           .style("text-anchor", "middle")
-          .text("Total Deaths (logarithmic)");
+          .text("Total Deaths logarithmic");
   
         var tooltip = d3.select("#tooltip"); // Select tooltip
   
