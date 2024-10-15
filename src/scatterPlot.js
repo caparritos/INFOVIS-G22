@@ -99,7 +99,7 @@ function updateScatterPlot(minYear, maxYear,country) {
         .attr("cy", function (d) {
           return y(d.total_deaths);
         })
-        .style("fill", (d) => (d.Country === selectedCountry ? "blue" : "#69b3a2"))
+        .style("fill", (d) => (d.Country === selectedCountry ? "red" : "#69b3a2"))
           
   
         circles.enter()
@@ -111,7 +111,7 @@ function updateScatterPlot(minYear, maxYear,country) {
             return y(d.total_deaths);
           })
           .attr("r", 3)
-          .style("fill", (d) => (d.Country === selectedCountry ? "blue" : "#69b3a2"))
+          .style("fill", (d) => (d.Country === selectedCountry ? "red" : "#69b3a2"))
           .on("mouseover", function (event, d) {
             tooltip.transition().duration(200).style("opacity", 0.9);
   
@@ -128,7 +128,7 @@ function updateScatterPlot(minYear, maxYear,country) {
           .on("mouseout", function (e, d) {
             tooltip.transition().duration(100).style("opacity", 0);
             if (selectedCountry === d.Country) {
-              d3.select(this).style("fill", "blue");
+              d3.select(this).style("fill", "red");
             } else {
               d3.select(this).style("fill", "#69b3a2"); // Volta à cor original
             }
@@ -155,7 +155,7 @@ function updateScatterPlot(minYear, maxYear,country) {
       
               // Atualiza a cor dos círculos
               svg.selectAll("circle")
-                  .style("fill", (d) => (d.Country === selectedCountry ? "blue" : "#69b3a2"));
+                  .style("fill", (d) => (d.Country === selectedCountry ? "red" : "#69b3a2"));
           }
           });
   
@@ -270,7 +270,7 @@ function updateScatterPlot(minYear, maxYear,country) {
             return y(d.total_deaths);
           })
           .attr("r", 3)
-          .style("fill", (d) => (d.Country === selectedCountry ? "blue" : "#69b3a2"))
+          .style("fill", (d) => (d.Country === selectedCountry ? "red" : "#69b3a2"))
           .on("mouseover", function (event, d) {
             tooltip.transition().duration(200).style("opacity", 0.9);
   
@@ -287,7 +287,7 @@ function updateScatterPlot(minYear, maxYear,country) {
           .on("mouseout", function (e, d) {
             tooltip.transition().duration(100).style("opacity", 0);
             if (selectedCountry === d.Country) {
-              d3.select(this).style("fill", "blue");
+              d3.select(this).style("fill", "red");
             } else {
               d3.select(this).style("fill", "#69b3a2"); // Volta à cor original
             }
@@ -314,7 +314,7 @@ function updateScatterPlot(minYear, maxYear,country) {
       
               // Atualiza a cor dos círculos
               svg.selectAll("circle")
-                  .style("fill", (d) => (d.Country === selectedCountry ? "blue" : "#69b3a2"));
+                  .style("fill", (d) => (d.Country === selectedCountry ? "red" : "#69b3a2"));
           }
           });
       }

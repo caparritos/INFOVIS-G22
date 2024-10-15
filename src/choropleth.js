@@ -1,15 +1,17 @@
 var selectedCountry = null;
 var previousCountry = null;
 
-function updateChoropleth(minYear, maxYear, country,globalFilter) {
-  selectedCountry = country
-  previousCountry = country
-  drawMap(minYear, maxYear, country,globalFilter);
+function updateChoropleth(minYear, maxYear, country, globalFilter) {
+  selectedCountry = country;
+  previousCountry = country;
+  drawMap(minYear, maxYear, country, globalFilter);
 }
 
 function processDataCloropleth(data, minYear, maxYear) {
   // Filtra os dados com base no intervalo de anos
-  const filteredData = data.filter((d) => d.StartYear >= minYear && d.StartYear <= maxYear);
+  const filteredData = data.filter(
+    (d) => d.StartYear >= minYear && d.StartYear <= maxYear
+  );
 
   // Agrupa por país e calcula as colunas necessárias
   const groupedData = filteredData.reduce((acc, current) => {
@@ -24,7 +26,8 @@ function processDataCloropleth(data, minYear, maxYear) {
     }
 
     acc[country].num_disasters += +current.num_disasters;
-    acc[country].total_deaths += +current.total_deaths == 0 ? 1 : +current.total_deaths;
+    acc[country].total_deaths +=
+      +current.total_deaths == 0 ? 1 : +current.total_deaths;
 
     return acc;
   }, {});
@@ -33,17 +36,20 @@ function processDataCloropleth(data, minYear, maxYear) {
   return Object.values(groupedData);
 }
 
-function drawMap(minYear, maxYear, country,globalFilter) {
+function drawMap(minYear, maxYear, country, globalFilter) {
   d3.select("#choropleth").select("svg").remove();
-  const svg = d3.select("#choropleth").append("svg")
-    .attr("width",730)
+  const svg = d3
+    .select("#choropleth")
+    .append("svg")
+    .attr("width", 730)
     .attr("height", 400);
 
   const width = 830;
   const height = 400;
 
   // Mapa e projeção
-  const projection = d3.geoMercator()
+  const projection = d3
+    .geoMercator()
     .scale(70)
     .center([0, 20])
     .translate([width / 2, height / 2]);
@@ -51,159 +57,171 @@ function drawMap(minYear, maxYear, country,globalFilter) {
   const path = d3.geoPath().projection(projection);
 
   // Escala de cores baseada no número de desastres
-  const colorScale = globalFilter === 'num_disasters'? d3.scaleThreshold()
-    .domain([0, 10, 50,100,200,400,800,1600])  // Defina os limites de desastres conforme necessário
-      .range(d3.schemeBuPu[8])
-    :d3.scaleThreshold()
-      .domain([0,500,10000,50000,70000,80000,90000,100000,150000])  // Defina os limites de desastres conforme necessário
-      .range(d3.schemePuRd[9]);
+  const colorScale =
+    globalFilter === "num_disasters"
+      ? d3
+          .scaleThreshold()
+          .domain([0, 10, 50, 100, 200, 400, 800, 1600]) // Defina os limites de desastres conforme necessário
+          .range(d3.schemeBuPu[8])
+      : d3
+          .scaleThreshold()
+          .domain([0, 500, 10000, 50000, 70000, 80000, 90000, 100000, 150000]) // Defina os limites de desastres conforme necessário
+          .range(d3.schemePuRd[9]);
 
   // Criação de um grupo para aplicar o zoom
   const g = svg.append("g");
 
-  
-
   // Carregar dados externos e inicializar o mapa
   Promise.all([
     d3.json("./pkg/world.geojson"),
-    d3.csv("../satinize_dataset/pre-processing/disasters_per_country.csv", d => {
-      // Converta os valores necessários para números
-      d.num_disasters = +d.num_disasters;  
-      return d;
-    })
-  ]).then(([topo, disasters]) => {
-    // Filtrar dados conforme minYear, maxYear e opcionalmente o país
-    const filteredData = processDataCloropleth(disasters,minYear,maxYear)
-    // Mapa para armazenar os dados de desastres por país
-    const dataMap = new Map();
-    filteredData.forEach(d => {
-      dataMap.set(d.Country, d[globalFilter]);
-    });
+    d3.csv(
+      "../satinize_dataset/pre-processing/disasters_per_country.csv",
+      (d) => {
+        // Converta os valores necessários para números
+        d.num_disasters = +d.num_disasters;
+        return d;
+      }
+    ),
+  ])
+    .then(([topo, disasters]) => {
+      // Filtrar dados conforme minYear, maxYear e opcionalmente o país
+      const filteredData = processDataCloropleth(disasters, minYear, maxYear);
+      // Mapa para armazenar os dados de desastres por país
+      const dataMap = new Map();
+      filteredData.forEach((d) => {
+        dataMap.set(d.Country, d[globalFilter]);
+      });
 
-    // Desenhar o mapa
-    g.selectAll("path")
-      .data(topo.features)
-      .join("path")
-      .attr("d", path)
-      .attr("fill", d => {
-        const countryName = d.properties.name;
-        var countryData = filteredData.filter(e=>e.Country == d.properties.name)
-        var count =countryData == '' ? 0: countryData[0].num_disasters;
-        if (globalFilter == 'total_deaths'){
-          count = countryData == '' ? 0: countryData[0].total_deaths;
+      // Desenhar o mapa
+      g.selectAll("path")
+        .data(topo.features)
+        .join("path")
+        .attr("d", path)
+        .attr("fill", (d) => {
+          const countryName = d.properties.name;
+          var countryData = filteredData.filter(
+            (e) => e.Country == d.properties.name
+          );
+          var count = countryData == "" ? 0 : countryData[0].num_disasters;
+          if (globalFilter == "total_deaths") {
+            count = countryData == "" ? 0 : countryData[0].total_deaths;
           }
 
-        // Se o país atual for o selecionado, pinta de vermelho, senão usa a escala de cor
-        return (country === countryName) ? "red" : colorScale(count);
-      })
-      .attr("stroke", "#fff")
-      .attr("stroke-width", 0.5)
-      
-      .on("mouseover", function(event, d) {
-        var countryData = filteredData.filter(e=>e.Country == d.properties.name)
-        var count =countryData == '' ? 0: countryData[0].num_disasters;
-        var text ='Disasters';
-        if (globalFilter == 'total_deaths'){
-          count = countryData == '' ? 0: countryData[0].total_deaths;
-          text = 'Deaths'}
-        
+          // Se o país atual for o selecionado, pinta de vermelho, senão usa a escala de cor
+          return country === countryName ? "red" : colorScale(count);
+        })
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 0.5)
 
-        d3.select("#tooltip")
-          .style("opacity", 1)
-          .html(`<strong>${d.properties.name}</strong><br/>${text}: ${count}`)
-          .style("left", (event.pageX + 10) + "px")
-          .style("top", (event.pageY - 10) + "px");
-      })
-      .on("mouseout", () => d3.select("#tooltip").style("opacity", 0))
-      .on("click", function(event, d) {
-        const countryName = d.properties.name;
-    
-        // Verifica se o país clicado é o mesmo que o anterior
-        if (selectedCountry === countryName) {
+        .on("mouseover", function (event, d) {
+          var countryData = filteredData.filter(
+            (e) => e.Country == d.properties.name
+          );
+          var count = countryData == "" ? 0 : countryData[0].num_disasters;
+          var text = "Disasters";
+          if (globalFilter == "total_deaths") {
+            count = countryData == "" ? 0 : countryData[0].total_deaths;
+            text = "Deaths";
+          }
+
+          d3.select("#tooltip")
+            .style("opacity", 1)
+            .html(`<strong>${d.properties.name}</strong><br/>${text}: ${count}`)
+            .style("left", event.pageX + 10 + "px")
+            .style("top", event.pageY - 10 + "px");
+        })
+        .on("mouseout", () => d3.select("#tooltip").style("opacity", 0))
+        .on("click", function (event, d) {
+          const countryName = d.properties.name;
+
+          // Verifica se o país clicado é o mesmo que o anterior
+          if (selectedCountry === countryName) {
             // Deseleciona o país, restaurando sua cor original
             g.selectAll("path")
-                .filter(d => d.properties.name === countryName)
-                .attr("fill", d => {
-                    const disastersCount = dataMap.get(d.properties.name) || 0;
-                    return colorScale(disastersCount);  // Restaurar a cor original
-                });
-    
+              .filter((d) => d.properties.name === countryName)
+              .attr("fill", (d) => {
+                const disastersCount = dataMap.get(d.properties.name) || 0;
+                return colorScale(disastersCount); // Restaurar a cor original
+              });
+
             // Reseta as variáveis de seleção
             previousCountry = null;
             selectedCountry = null; // ou algum valor padrão
-        } else {
+          } else {
             // Se houver um país anteriormente selecionado, restauramos sua cor original
             if (previousCountry) {
-                g.selectAll("path")
-                    .filter(d => d.properties.name === previousCountry)
-                    .attr("fill", d => {
-                        const disastersCount = dataMap.get(d.properties.name) || 0;
-                        return colorScale(disastersCount);  // Restaurar a cor original
-                    });
+              g.selectAll("path")
+                .filter((d) => d.properties.name === previousCountry)
+                .attr("fill", (d) => {
+                  const disastersCount = dataMap.get(d.properties.name) || 0;
+                  return colorScale(disastersCount); // Restaurar a cor original
+                });
             }
             d3.select(this).attr("fill", "red");
             previousCountry = countryName;
             selectedCountry = countryName;
-        }
-    
-        // Atualiza os gráficos
-        updateCountry(selectedCountry);
-        updateRadialChart(minYear, maxYear, selectedCountry,globalFilter);
-        updateScatterPlot(minYear, maxYear, selectedCountry);
-    });
-// Criar um grupo para a escala
-const legendGroup = svg.append("g")
-    .attr("transform", "translate(30, 40)"); // Ajuste a posição conforme necessário
+          }
 
-const legendHeight = 300;
-const legendWidth = 20;
+          // Atualiza os gráficos
+          updateCountry(selectedCountry);
+          updateRadialChart(minYear, maxYear, selectedCountry, globalFilter);
+          updateScatterPlot(minYear, maxYear, selectedCountry);
+        });
+      // Criar um grupo para a escala
+      const legendGroup = svg
+        .append("g")
+        .attr("transform", "translate(30, 40)"); // Ajuste a posição conforme necessário
 
-// Desenhar retângulos coloridos para a escala
-colorScale.range().forEach((color, i) => {
-    legendGroup.append("rect")
-        .attr("x", 0)
-        .attr("y", (legendHeight / colorScale.range().length) * i) // Distribui verticalmente
-        .attr("width", legendWidth)
-        .attr("height", legendHeight / colorScale.range().length) // Altura proporcional à barra
-        .attr("fill", color);
-});
+      const legendHeight = 300;
+      const legendWidth = 20;
 
-// Adicionar rótulos à escala
-const ticks = colorScale.domain(); // Valores para os rótulos
-ticks.forEach((tick, i) => {
-    // Adiciona rótulos somente se não for o último
-    if (i < ticks.length - 1) {
-        legendGroup.append("text")
+      // Desenhar retângulos coloridos para a escala
+      colorScale.range().forEach((color, i) => {
+        legendGroup
+          .append("rect")
+          .attr("x", 0)
+          .attr("y", (legendHeight / colorScale.range().length) * i) // Distribui verticalmente
+          .attr("width", legendWidth)
+          .attr("height", legendHeight / colorScale.range().length) // Altura proporcional à barra
+          .attr("fill", color);
+      });
+
+      // Adicionar rótulos à escala
+      const ticks = colorScale.domain(); // Valores para os rótulos
+      ticks.forEach((tick, i) => {
+        // Adiciona rótulos somente se não for o último
+        if (i < ticks.length - 1) {
+          legendGroup
+            .append("text")
             .attr("x", legendWidth + 5) // Posição do rótulo à direita dos retângulos
             .attr("y", (legendHeight / colorScale.range().length) * (i + 0.5)) // Centraliza verticalmente
             .attr("dy", ".35em") // Alinha verticalmente ao centro
             .text(tick);
-    }
-});
+        }
+      });
 
-// Adicionar rótulo do valor máximo
-legendGroup.append("text")
-    .attr("x", legendWidth + 5)
-    .attr("y", legendHeight - 5) // Último rótulo na parte inferior
-    .text(d3.max(ticks)); // O maior valor no domínio
+      // Adicionar rótulo do valor máximo
+      legendGroup
+        .append("text")
+        .attr("x", legendWidth + 5)
+        .attr("y", legendHeight - 5) // Último rótulo na parte inferior
+        .text(d3.max(ticks)); // O maior valor no domínio
 
       // Add zoom functionality
-      const zoom = d3.zoom()
-        .scaleExtent([1, 8])  // Define a escala mínima e máxima
+      const zoom = d3
+        .zoom()
+        .scaleExtent([1, 8]) // Define a escala mínima e máxima
         .on("zoom", (event) => {
-          g.attr("transform", event.transform);  // Aplica a transformação de zoom ao grupo
+          g.attr("transform", event.transform); // Aplica a transformação de zoom ao grupo
         });
 
-      svg.call(zoom);  // Aplica o zoom ao SVG
-
-
-
-  })
-  .catch(err => {
-    console.error("Error loading the data: ", err);
-  });
+      svg.call(zoom); // Aplica o zoom ao SVG
+    })
+    .catch((err) => {
+      console.error("Error loading the data: ", err);
+    });
 }
 // Executa o drawMap quando o DOM estiver totalmente carregado
 document.addEventListener("DOMContentLoaded", function () {
-  drawMap(minYear,maxYear, country,globalFilter); // Exemplo de chamada para desenhar o mapa
+  drawMap(minYear, maxYear, country, globalFilter); // Exemplo de chamada para desenhar o mapa
 });
