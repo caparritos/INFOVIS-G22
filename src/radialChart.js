@@ -49,7 +49,7 @@ function createRadialChart(minYear, maxYear, country) {
   var tooltip = d3.select("#tooltip"); // Select tooltip
 
   d3.csv(
-    "../satinize_dataset/pre-processing/disaster_subgroup_frequency.csv"
+    "satinize_dataset/pre-processing/disaster_subgroup_frequency.csv"
   ).then((data) => {
     if (radialChartData === undefined) radialChartData = data;
     // Convert values to numbers
@@ -289,7 +289,9 @@ function showTooltip(event, d, tooltip) {
 
   tooltip
     .html(
-      `<strong>${d[globalFilter]} ${globalFilter === "num_disasters" ? "disasters" : "deaths"}</strong><br>`
+      `<strong>${d[globalFilter]} ${
+        globalFilter === "num_disasters" ? "disasters" : "deaths"
+      }</strong><br>`
     )
     .style("left", event.clientX + 10 + "px")
     .style("top", event.clientY - 20 + "px");

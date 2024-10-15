@@ -74,14 +74,11 @@ function drawMap(minYear, maxYear, country, globalFilter) {
   // Carregar dados externos e inicializar o mapa
   Promise.all([
     d3.json("./pkg/world.geojson"),
-    d3.csv(
-      "../satinize_dataset/pre-processing/disasters_per_country.csv",
-      (d) => {
-        // Converta os valores necessários para números
-        d.num_disasters = +d.num_disasters;
-        return d;
-      }
-    ),
+    d3.csv("satinize_dataset/pre-processing/disasters_per_country.csv", (d) => {
+      // Converta os valores necessários para números
+      d.num_disasters = +d.num_disasters;
+      return d;
+    }),
   ])
     .then(([topo, disasters]) => {
       // Filtrar dados conforme minYear, maxYear e opcionalmente o país
