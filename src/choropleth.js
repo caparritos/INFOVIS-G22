@@ -124,7 +124,7 @@ function drawMap(minYear, maxYear, country, globalFilter) {
           );
           var count = countryData == 0 ? 0 : countryData[0].num_disasters;
           if (globalFilter == "total_deaths") {
-            count = countryData == "" ? 0 : countryData[0].total_deaths;
+            count = countryData == 0 ? 0 : countryData[0].total_deaths;
           }
 
           // Use teal for the selected country
@@ -141,6 +141,7 @@ function drawMap(minYear, maxYear, country, globalFilter) {
         .attr("stroke-width", 0.5)
 
         .on("mouseover", function (event, d) {
+          d3.select(this).attr("fill", "#fc8d62");
           var countryData = filteredData.filter(
             (e) => e.Country == d.properties.name
           );
@@ -157,7 +158,33 @@ function drawMap(minYear, maxYear, country, globalFilter) {
             .style("left", event.pageX + 10 + "px")
             .style("top", event.pageY - 10 + "px");
         })
-        .on("mouseout", () => d3.select("#tooltip").style("opacity", 0))
+        .on("mouseout", function (event, d) {
+          // Restore the original fill color when mouse leaves
+          const countryName = d.properties.name;
+          var countryData = filteredData.filter(
+            (e) => e.Country == countryName
+          );
+          var count = countryData == 0 ? 0 : countryData[0].num_disasters;
+          
+          if (globalFilter == "total_deaths") {
+            count = countryData == "" ? 0 : countryData[0].total_deaths;
+          }
+      
+          // Set the fill color back to its original state
+          d3.select(this).attr("fill", (d) => {
+            // Use teal for the selected country
+            if (selectedCountry === countryName) return selectedCountryColor;
+      
+            // Use gray for missing data
+            if (count === 0) return missingDataColor;
+      
+            // Apply the color scale for all other countries
+            return colorScale(count);
+          });
+      
+          // Hide the tooltip on mouse out
+          d3.select("#tooltip").style("opacity", 0);
+        })
         .on("click", function (event, d) {
           const countryName = d.properties.name;
 

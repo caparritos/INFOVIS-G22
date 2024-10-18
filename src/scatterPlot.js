@@ -3,6 +3,9 @@ function updateScatterPlot(minYear, maxYear,country) {
   createScatterPlot(minYear, maxYear,country);
 } */
 
+var selection_color = "#1ed928"
+var dot_color = '#1F5F5B'
+
 function processData(data, minYear, maxYear) {
   // Filter data with range
   const filteredData = data.filter(
@@ -87,7 +90,7 @@ function updateScatterPlot(minYear, maxYear, country) {
           return y(d.total_deaths);
         })
         .style("fill", (d) =>
-          d.Country === selectedCountry ? "red" : "#69b3a2"
+          d.Country === selectedCountry ? selection_color : dot_color
         );
 
       circles
@@ -101,7 +104,7 @@ function updateScatterPlot(minYear, maxYear, country) {
         })
         .attr("r", 3)
         .style("fill", (d) =>
-          d.Country === selectedCountry ? "red" : "#69b3a2"
+          d.Country === selectedCountry ? selection_color : dot_color
         )
         .on("mouseover", function (event, d) {
           tooltip.transition().duration(200).style("opacity", 0.9);
@@ -119,9 +122,9 @@ function updateScatterPlot(minYear, maxYear, country) {
         .on("mouseout", function (e, d) {
           tooltip.transition().duration(100).style("opacity", 0);
           if (selectedCountry === d.Country) {
-            d3.select(this).style("fill", "red");
+            d3.select(this).style("fill", selection_color);
           } else {
-            d3.select(this).style("fill", "#69b3a2"); // Volta à cor original
+            d3.select(this).style("fill", dot_color); // Volta à cor original
           }
         })
         .on("click", (event, d) => {
@@ -130,7 +133,7 @@ function updateScatterPlot(minYear, maxYear, country) {
             selectedCountry = null; // Reseta a seleção
 
             // Atualiza a cor dos círculos para o estado não selecionado
-            svg.selectAll("circle").style("fill", "#69b3a2"); // Cor padrão dos círculos
+            svg.selectAll("circle").style("fill", dot_color); // Cor padrão dos círculos
 
             // Aqui você pode querer também limpar ou resetar outros gráficos, se necessário
             updateCountry(null); // Atualiza o país, se necessário
@@ -147,7 +150,7 @@ function updateScatterPlot(minYear, maxYear, country) {
             svg
               .selectAll("circle")
               .style("fill", (d) =>
-                d.Country === selectedCountry ? "red" : "#69b3a2"
+                d.Country === selectedCountry ? selection_color : dot_color
               );
           }
         });
@@ -272,7 +275,7 @@ function createScatterPlot(minYear, maxYear, country) {
         })
         .attr("r", 3)
         .style("fill", (d) =>
-          d.Country === selectedCountry ? "red" : "#69b3a2"
+          d.Country === selectedCountry ? selection_color : dot_color
         )
         .on("mouseover", function (event, d) {
           tooltip.transition().duration(200).style("opacity", 0.9);
@@ -290,9 +293,9 @@ function createScatterPlot(minYear, maxYear, country) {
         .on("mouseout", function (e, d) {
           tooltip.transition().duration(100).style("opacity", 0);
           if (selectedCountry === d.Country) {
-            d3.select(this).style("fill", "red");
+            d3.select(this).style("fill", selection_color);
           } else {
-            d3.select(this).style("fill", "#69b3a2"); // Volta à cor original
+            d3.select(this).style("fill", dot_color); // Volta à cor original
           }
         })
         .on("click", (event, d) => {
@@ -301,7 +304,7 @@ function createScatterPlot(minYear, maxYear, country) {
             selectedCountry = null; // Reseta a seleção
 
             // Atualiza a cor dos círculos para o estado não selecionado
-            svg.selectAll("circle").style("fill", "#69b3a2"); // Cor padrão dos círculos
+            svg.selectAll("circle").style("fill", dot_color); // Cor padrão dos círculos
 
             // Aqui você pode querer também limpar ou resetar outros gráficos, se necessário
             updateCountry(null); // Atualiza o país, se necessário
@@ -318,7 +321,7 @@ function createScatterPlot(minYear, maxYear, country) {
             svg
               .selectAll("circle")
               .style("fill", (d) =>
-                d.Country === selectedCountry ? "red" : "#69b3a2"
+                d.Country === selectedCountry ? selection_color : dot_color
               );
           }
         });

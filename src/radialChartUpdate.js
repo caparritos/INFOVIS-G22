@@ -112,7 +112,7 @@ function updateRadialChartSingle(svg, data, oldData, arc, numArcs, arcWidth, arc
 		.select("text")
 		.style('text-anchor', d => (scale(d) >= PI && scale(d) < 2 * PI ? 'end' : null))
 		.attr('transform', d => `rotate(${90 - rad2deg(scale(d))},${chartRadius + 10},0)`)
-		.text(d => d);
+		.text(d => d < 500 ? d : d3.format(".2s")(d));
 
 	const newAxialAxis = axialAxis.enter().append('g')
 		.attr('transform', d => `rotate(${rad2deg(scale(d)) - 90})`);
