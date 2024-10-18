@@ -37,6 +37,10 @@ function processDataCloropleth(data, minYear, maxYear) {
 }
 
 function drawMap(minYear, maxYear, country, globalFilter) {
+  
+  const missingDataColor = '#d9d9d9';
+  const selectedCountryColor = "#1ed928";
+
   d3.select("#choropleth").select("svg").remove();
   const svg = d3
     .select("#choropleth")
@@ -59,14 +63,33 @@ function drawMap(minYear, maxYear, country, globalFilter) {
   // Escala de cores baseada no número de desastres
   const colorScale =
     globalFilter === "num_disasters"
-      ? d3
-          .scaleThreshold()
-          .domain([0, 10, 50, 100, 200, 400, 800, 1600]) // Defina os limites de desastres conforme necessário
-          .range(d3.schemeBuPu[8])
+    ? d3
+      .scaleThreshold()
+      .domain([0, 10, 50, 100, 200, 400, 800, 1600])
+      .range([
+        '#d0e7ff',  // Light blue
+        '#a6cfff',
+        '#7eb8ff',
+        '#569fff',
+        '#2e87ff',  // Medium blue
+        '#006fdd',
+        '#0059bb',
+        '#002966'   // Darkest blue
+      ])
       : d3
-          .scaleThreshold()
-          .domain([0, 500, 10000, 50000, 70000, 80000, 90000, 100000, 150000]) // Defina os limites de desastres conforme necessário
-          .range(d3.schemePuRd[9]);
+      .scaleThreshold()
+      .domain([0, 100, 200, 500, 1000, 2000, 5000, 10000, 50000])
+      .range([
+        '#fde0dd',  // Lightest red
+        '#fcc5c0',
+        '#fa9fb5',
+        '#f768a1',
+        '#dd3497',
+        '#ae017e',
+        '#7a0177',
+        '#4a016a',
+        '#2f004f'   // Darkest red
+      ]);
 
   // Criação de um grupo para aplicar o zoom
   const g = svg.append("g");
@@ -99,12 +122,19 @@ function drawMap(minYear, maxYear, country, globalFilter) {
           var countryData = filteredData.filter(
             (e) => e.Country == d.properties.name
           );
-          var count = countryData == "" ? 0 : countryData[0].num_disasters;
+          var count = countryData == 0 ? 0 : countryData[0].num_disasters;
           if (globalFilter == "total_deaths") {
             count = countryData == "" ? 0 : countryData[0].total_deaths;
           }
 
-          // Se o país atual for o selecionado, pinta de vermelho, senão usa a escala de cor
+          // Use teal for the selected country
+          if (country === countryName) return selectedCountryColor;
+
+          // Use gray for missing data
+          if (count === 0) return missingDataColor;
+
+          // Apply the color scale for all other countries
+          return colorScale(count);
           return country === countryName ? "#1ed928" : colorScale(count);
         })
         .attr("stroke", "#fff")

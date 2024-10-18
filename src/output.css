@@ -675,7 +675,7 @@ video {
 }
 
 .range-slider {
-  --primary-color: #0366d6;
+  --primary-color: #1F5F5B;
   --value-offset-y: var(--ticks-gap);
   --value-active-color: white;
   --value-background: transparent;
