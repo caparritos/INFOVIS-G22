@@ -105,7 +105,7 @@ function drawMap(minYear, maxYear, country, globalFilter) {
           }
 
           // Se o país atual for o selecionado, pinta de vermelho, senão usa a escala de cor
-          return country === countryName ? "red" : colorScale(count);
+          return country === countryName ? "#1ed928" : colorScale(count);
         })
         .attr("stroke", "#fff")
         .attr("stroke-width", 0.5)

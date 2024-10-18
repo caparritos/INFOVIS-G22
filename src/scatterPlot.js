@@ -57,7 +57,7 @@ function updateScatterPlot(minYear, maxYear, country) {
       var formatAbbreviation = d3.format(".2s");
 
       // axis X
-      var x = d3.scaleLog().base(10).domain([1, 40000]).range([0, width]);
+      var x = d3.scaleLog().base(10).domain([1, 50000]).range([0, width]);
 
       // axis Y
       var y = d3.scaleLog().base(10).domain([1, 250000]).range([height, 0]);
@@ -66,7 +66,6 @@ function updateScatterPlot(minYear, maxYear, country) {
         .select("#x-axis-label")
         .transition()
         .duration(1000)
-        .call(d3.axisBottom(x).ticks(15))
         .style("font-size", "10px");
 
       var tooltip = d3.select("#tooltip"); // Select tooltip
@@ -199,14 +198,32 @@ function createScatterPlot(minYear, maxYear, country) {
       // axis X
       var x = d3.scaleLog().base(10).domain([1, 50000]).range([0, width]);
 
-      svg
-        .append("g")
-        .attr("id", "x-axis-label")
+      // add ticks
+      var xAxis = d3.axisBottom(x)
+        .tickValues([1, 10, 100, 1000, 10000]) // Labeled ticks at powers of 10
+        .tickFormat(d3.format(".1s"))          // Format powers of 10 using scientific notation
+        .tickSize(10);                         // Standard tick size for labeled ticks
+
+      // Add minor ticks
+      var minorTicks = d3.axisBottom(x)
+        .tickValues([2, 3, 4, 5, 6, 7, 8, 9, 20, 30, 40, 50, 60, 70, 80, 90, 200, 300, 400, 500, 600, 700, 800, 900, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 20000, 30000, 40000, 50000])
+        .tickSize(5)                           // Smaller tick size for unlabeled minor ticks
+        .tickFormat("");                       // No labels for minor ticks     
+
+      // Append the x-axis to the svg
+      svg.append("g")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x).ticks(15))
+        .call(xAxis)
         .selectAll("text")
         .style("font-size", "10px")
         .style("text-anchor", "end");
+
+      // Append the minor ticks to the x-axis
+      svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(minorTicks);
+
+
       // axis Y
       var y = d3.scaleLog().base(10).domain([1, 250000]).range([height, 0]);
 
