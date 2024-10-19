@@ -135,7 +135,7 @@ function drawMap(minYear, maxYear, country, globalFilter) {
 
           // Apply the color scale for all other countries
           return colorScale(count);
-          return country === countryName ? "#1ed928" : colorScale(count);
+          // return country === countryName ? "#1ed928" : colorScale(count);
         })
         .attr("stroke", "#fff")
         .attr("stroke-width", 0.5)
