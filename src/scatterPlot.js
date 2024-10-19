@@ -109,11 +109,12 @@ function updateScatterPlot(minYear, maxYear, country) {
         .on("mouseover", function (event, d) {
           tooltip.transition().duration(200).style("opacity", 0.9);
 
+          const formatNumber = d3.format(".2s");
           tooltip
             .html(
               `<strong>${d.Country}</strong><br>` + // Display country
-                `Disasters density: ${d.disasters_per_area.toFixed(1)}<br>` + // Show disasters per area
-                `Total Deaths: ${d.total_deaths}` // Show total deaths in scientific notation
+                `Disasters density: ${d.disasters_per_area.toFixed(1)<500 ? d.disasters_per_area.toFixed(1) : formatNumber(d.disasters_per_area.toFixed(1))}<br>` + // Show disasters per area
+                `Total Deaths: ${d.total_deaths<500 ? d.total_deaths : formatNumber(d.total_deaths)}` // Show total deaths in scientific notation
             )
             .style("left", event.clientX + 10 + "px")
             .style("top", event.clientY - 20 + "px");
@@ -279,15 +280,15 @@ function createScatterPlot(minYear, maxYear, country) {
         )
         .on("mouseover", function (event, d) {
           tooltip.transition().duration(200).style("opacity", 0.9);
-
+          const formatNumber = d3.format(".2s");
           tooltip
             .html(
               `<strong>${d.Country}</strong><br>` + // Display country
-                `Disasters density: ${d.disasters_per_area.toFixed(1)}<br>` + // Show disasters per area
-                `Total Deaths: ${d.total_deaths}` // Show total deaths in scientific notation
+                `Disasters density: ${d.disasters_per_area.toFixed(1)<500 ? d.disasters_per_area.toFixed(1) : formatNumber(d.disasters_per_area.toFixed(1))}<br>` + // Show disasters per area
+                `Total Deaths: ${d.total_deaths<500 ? d.total_deaths : formatNumber(d.total_deaths)}` // Show total deaths in scientific notation
             )
-            .style("left", event.clientX + 10 + "px")
-            .style("top", event.clientY - 20 + "px");
+            .style("left", event.clientX - 180 + "px")
+            .style("top", event.clientY - 88 + "px");
           d3.select(this).style("fill", "#fc8d62");
         })
         .on("mouseout", function (e, d) {

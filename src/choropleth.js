@@ -152,9 +152,10 @@ function drawMap(minYear, maxYear, country, globalFilter) {
             text = "Deaths";
           }
 
+          const formatNumber = d3.format(".2s");
           d3.select("#tooltip")
             .style("opacity", 1)
-            .html(`<strong>${d.properties.name}</strong><br/>${text}: ${count}`)
+            .html(`<strong>${d.properties.name}</strong><br/>${text}: ${count<500 ? count : formatNumber(count)}`)
             .style("left", event.pageX + 10 + "px")
             .style("top", event.pageY - 10 + "px");
         })

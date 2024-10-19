@@ -285,19 +285,19 @@ function arcTween(d, i, arc, initial = 0) {
 
 //  TOOLTIP FUNCTIONS
 function showTooltip(event, d, tooltip) {
+  const formatNumber = d3.format(".2s");
   tooltip.transition().duration(200).style("opacity", 0.9);
 
   tooltip
     .html(
       `<strong>${country || 'World'}</strong><br>
 
-      ${d[globalFilter]} ${
+      ${d[globalFilter] < 500 ? d[globalFilter] : formatNumber(d[globalFilter])} ${
         globalFilter === "num_disasters" ? "disasters" : "deaths"
       }`
     )
     .style("left", event.clientX + 10 + "px")
     .style("top", event.clientY - 20 + "px");
-  //d3.select(this).style("fill", "#fc8d62");
 }
 
 function hideTooltip(tooltip) {
