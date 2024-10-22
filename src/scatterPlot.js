@@ -275,9 +275,13 @@ function createScatterPlot(minYear, maxYear, country) {
           return y(d.total_deaths);
         })
         .attr("r", 3)
-        .style("fill", (d) =>
-          d.Country === selectedCountry ? selection_color : dot_color
-        )
+        .style("fill", (d) =>{
+          if (d.Country === selectedCountry) {
+            return selection_color;
+          }else {
+            return dot_color;
+          }
+        })
         .on("mouseover", function (event, d) {
           tooltip.transition().duration(200).style("opacity", 0.9);
           const formatNumber = d3.format(".2s");

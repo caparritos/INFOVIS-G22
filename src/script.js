@@ -47,12 +47,8 @@ function updateSlider(slider, type) {
   // Função para lidar com a mudança de filtro
 function changeFilter(button, filter) {
   globalFilter = filter;
-
-  // Remove a classe 'active' de todos os botões
   const buttons = document.querySelectorAll('.globalFilter-button');
   buttons.forEach(btn => btn.classList.remove('active'));
-
-  // Adiciona a classe 'active' ao botão clicado
   button.classList.add('active');
   updateChoropleth(minYear, maxYear, country,filter)
   updateRadialChart(minYear, maxYear, country,filter)
