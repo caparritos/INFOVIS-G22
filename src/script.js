@@ -55,5 +55,20 @@ function changeFilter(button, filter) {
 }
   
 
+document.addEventListener("DOMContentLoaded", function () {
+  const btnDisasters = document.getElementById("Number-Disasters");
+  const btnDeaths = document.getElementById("Death-Disasters");
 
+  btnDisasters.addEventListener("click", function () {
+    // change border color
+    btnDisasters.style.borderColor = "#000000";
+    btnDeaths.style.borderColor = "#ae017e";
+  });
+
+  btnDeaths.addEventListener("click", function () {
+    // change border color
+    btnDeaths.style.borderColor = "#000000";
+    btnDisasters.style.borderColor = "#006fdd";
+  });
+});
   

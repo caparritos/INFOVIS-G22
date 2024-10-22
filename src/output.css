@@ -1092,7 +1092,7 @@ path.arc:hover {
   font-weight: bold;
   color: white;
   background-color: #007BFF; /* Azul padrão */
-  border: none;
+  border: 3.5px solid #000000; /* Borda azul */
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease; /* Suaviza as transições */
@@ -1113,4 +1113,3 @@ path.arc:hover {
   background-color: #28a745; /* Cor verde para o botão ativo */
   color: white;
 }
-

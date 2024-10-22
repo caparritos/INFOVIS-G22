@@ -200,7 +200,7 @@ function createRadialChart(minYear, maxYear, country) {
         "transform",
         (d) => `rotate(${90 - rad2deg(scaleNatural(d))},${chartRadius + 10},0)`
       )
-      .text((d) => d < 500 ? d : d3.format(".2s")(d));
+      .text(d => !Number.isInteger(d) ? "" : d < 500 ? d : d3.format(".2~s")(d));
 
     // Axial Axis
     const axialAxis2 = svg2
@@ -229,7 +229,7 @@ function createRadialChart(minYear, maxYear, country) {
         "transform",
         (d) => `rotate(${90 - rad2deg(scaleTechnological(d))},${chartRadius},0)`
       )
-      .text((d) => d < 500 ? d : d3.format(".2s")(d));
+      .text(d => !Number.isInteger(d) ? "" : d < 500 ? d : d3.format(".2~s")(d));
 
     // Data Arcs
     const arcs = svg
@@ -285,7 +285,7 @@ function arcTween(d, i, arc, initial = 0) {
 
 //  TOOLTIP FUNCTIONS
 function showTooltip(event, d, tooltip) {
-  const formatNumber = d3.format(".2s");
+  const formatNumber = d3.format(".2~s");
   tooltip.transition().duration(200).style("opacity", 0.9);
 
   tooltip
