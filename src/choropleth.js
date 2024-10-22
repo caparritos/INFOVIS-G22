@@ -10,7 +10,7 @@ function updateChoropleth(minYear, maxYear, country, globalFilter) {
 function processDataCloropleth(data, minYear, maxYear) {
   // Filtra os dados com base no intervalo de anos
   const filteredData = data.filter(
-    (d) => d.StartYear >= minYear && d.StartYear <= maxYear 
+    (d) => d.StartYear >= minYear && d.StartYear <= maxYear
   );
 
   // Agrupa por país e calcula as colunas necessárias
@@ -37,8 +37,7 @@ function processDataCloropleth(data, minYear, maxYear) {
 }
 
 function drawMap(minYear, maxYear, country, globalFilter) {
-  
-  const missingDataColor = '#d9d9d9';
+  const missingDataColor = "#d9d9d9";
   const selectedCountryColor = "#1ed928";
 
   d3.select("#choropleth").select("svg").remove();
@@ -63,33 +62,33 @@ function drawMap(minYear, maxYear, country, globalFilter) {
   // Escala de cores baseada no número de desastres
   const colorScale =
     globalFilter === "num_disasters"
-    ? d3
-      .scaleThreshold()
-      .domain([0, 10, 50, 100, 200, 400, 800, 1600])
-      .range([
-        '#d0e7ff',  // Light blue
-        '#a6cfff',
-        '#7eb8ff',
-        '#569fff',
-        '#2e87ff',  // Medium blue
-        '#006fdd',
-        '#0059bb',
-        '#002966'   // Darkest blue
-      ])
+      ? d3
+          .scaleThreshold()
+          .domain([10, 30, 50, 100, 200, 400, 800, 1600])
+          .range([
+            "#d0e7ff", // Light blue
+            "#a6cfff",
+            "#7eb8ff",
+            "#569fff",
+            "#2e87ff", // Medium blue
+            "#006fdd",
+            "#0059bb",
+            "#002966", // Darkest blue
+          ])
       : d3
-      .scaleThreshold()
-      .domain([0, 100, 200, 500, 1000, 2000, 5000, 10000, 50000])
-      .range([
-        '#fde0dd',  // Lightest red
-        '#fcc5c0',
-        '#fa9fb5',
-        '#f768a1',
-        '#dd3497',
-        '#ae017e',
-        '#7a0177',
-        '#4a016a',
-        '#2f004f'   // Darkest red
-      ]);
+          .scaleThreshold()
+          .domain([50, 100, 200, 500, 1000, 2000, 5000, 10000, 50000])
+          .range([
+            "#fde0dd", // Lightest red
+            "#fcc5c0",
+            "#fa9fb5",
+            "#f768a1",
+            "#dd3497",
+            "#ae017e",
+            "#7a0177",
+            "#4a016a",
+            "#2f004f", // Darkest red
+          ]);
 
   // Criação de um grupo para aplicar o zoom
   const g = svg.append("g");
@@ -155,7 +154,15 @@ function drawMap(minYear, maxYear, country, globalFilter) {
           const formatNumber = d3.format(".2s");
           d3.select("#tooltip")
             .style("opacity", 1)
-            .html(`<strong>${d.properties.name}</strong><br/>${text}: ${count == 0 ? "No Data" : count<500 ? count : formatNumber(count)}`)
+            .html(
+              `<strong>${d.properties.name}</strong><br/>${text}: ${
+                count == 0
+                  ? "No Data"
+                  : count < 500
+                  ? count
+                  : formatNumber(count)
+              }`
+            )
             .style("left", event.pageX + 10 + "px")
             .style("top", event.pageY - 10 + "px");
         })
@@ -166,23 +173,24 @@ function drawMap(minYear, maxYear, country, globalFilter) {
             (e) => e.Country == countryName
           );
           var count = countryData == 0 ? 0 : countryData[0].num_disasters;
-          
+
           if (globalFilter == "total_deaths") {
             count = countryData == "" ? 0 : countryData[0].total_deaths;
           }
-      
+
           // Set the fill color back to its original state
           d3.select(this).attr("fill", (d) => {
             // Use teal for the selected country
             if (selectedCountry === countryName) return selectedCountryColor;
-      
+
             // Use gray for missing data
             if (count === 0) return missingDataColor;
-      
+
             // Apply the color scale for all other countries
+            console.log(colorScale(9));
             return colorScale(count);
           });
-      
+
           // Hide the tooltip on mouse out
           d3.select("#tooltip").style("opacity", 0);
         })
@@ -241,26 +249,46 @@ function drawMap(minYear, maxYear, country, globalFilter) {
           .attr("fill", color);
       });
 
+      // Add lines separating each square of the color scale
+      colorScale.range().forEach((_, i) => {
+        // Skip the first square
+        legendGroup
+          .append("line")
+          .attr("x1", 0)
+          .attr("y1", (legendHeight / colorScale.range().length) * (i+1))
+          .attr("x2", legendWidth + 5)
+          .attr("y2", (legendHeight / colorScale.range().length) * (i+1))
+          .attr("stroke", "#000") // Line color
+          .attr("stroke-width", 1); // Line width
+      });
+
       // Adicionar rótulos à escala
       const ticks = colorScale.domain(); // Valores para os rótulos
       ticks.forEach((tick, i) => {
         // Adiciona rótulos somente se não for o último
-        if (i < ticks.length - 1) {
+        if (i < ticks.length) {
           legendGroup
             .append("text")
-            .attr("x", legendWidth + 5) // Posição do rótulo à direita dos retângulos
-            .attr("y", (legendHeight / colorScale.range().length) * (i + 0.5)) // Centraliza verticalmente
+            .attr("x", legendWidth + 10) // Posição do rótulo à direita dos retângulos
+            .attr("y", (legendHeight / colorScale.range().length) * (i + 1)) // Centraliza verticalmente
             .attr("dy", ".35em") // Alinha verticalmente ao centro
-            .text(tick);
+            .text(tick < 500 ? tick : d3.format(".1~s")(tick)); // Formatação dos rótulos
         }
       });
 
-      // Adicionar rótulo do valor máximo
+      // Add label
       legendGroup
         .append("text")
-        .attr("x", legendWidth + 5)
-        .attr("y", legendHeight - 5) // Último rótulo na parte inferior
-        .text(d3.max(ticks)); // O maior valor no domínio
+        .attr("x", legendWidth - 30)
+        .attr("y", legendHeight + 40) // Primeiro rótulo na parte superior
+        .text(globalFilter == "num_disasters" ? "Disasters" : "Deaths"); // O menor valor
+
+      // Adicionar rótulo do valor máximo
+      // legendGroup
+      //   .append("text")
+      //   .attr("x", legendWidth + 5)
+      //   .attr("y", legendHeight - 5) // Último rótulo na parte inferior
+      //   .text(d3.max(ticks)); // O maior valor no domínio
 
       // Add zoom functionality
       const zoom = d3
