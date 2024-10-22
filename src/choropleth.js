@@ -46,15 +46,15 @@ function drawMap(minYear, maxYear, country, globalFilter) {
     .select("#choropleth")
     .append("svg")
     .attr("width", 730)
-    .attr("height", 400);
+    .attr("height", 450);
 
   const width = 830;
-  const height = 400;
+  const height = 600;
 
   // Mapa e projeção
   const projection = d3
     .geoMercator()
-    .scale(70)
+    .scale(100)
     .center([0, 20])
     .translate([width / 2, height / 2]);
 
