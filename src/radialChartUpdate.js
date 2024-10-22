@@ -3,7 +3,7 @@ const radialChartOldData = {}
 
 function updateRadialChart(minYear, maxYear, country,globalFilter) {
 	//createRadialChart(minYear, maxYear, country);
-	console.log(globalFilter)
+	//console.log(globalFilter)
 	let svg = d3.select('#radialChart').select('#naturalDisasters');
 	let svg2 = d3.select('#radialChart').select('#techDisasters');
 
@@ -134,7 +134,7 @@ function updateRadialChartSingle(svg, data, oldData, arc, numArcs, arcWidth, arc
 		.selectAll('path')
 		.data(data);
 
-			console.log(oldData)
+			//console.log(oldData)
 	arcs.transition()
 		.duration(1000)
 		.attrTween('d', (d, i) => arcTween(d, i, arc, oldData?.[i].num_disasters ?? 0));

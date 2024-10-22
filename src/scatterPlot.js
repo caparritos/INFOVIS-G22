@@ -32,8 +32,7 @@ function processData(data, minYear, maxYear) {
 
     acc[country].disasters_per_area += +current.disasters_per_area;
     acc[country].total_deaths +=
-      +current.total_deaths == 0 ? 1 : +current.total_deaths; //> 0 ? Math.log(+current.total_deaths) : 0;
-
+      +current.total_deaths == 0 ? 1 : +current.total_deaths;
     return acc;
   }, {});
 
