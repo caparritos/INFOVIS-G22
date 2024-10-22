@@ -5,12 +5,17 @@ function updateScatterPlot(minYear, maxYear,country) {
 
 var selection_color = "#1ed928"
 var dot_color = '#1F5F5B'
+var dot_colorAsia = 'yellow'
+var dot_colorAmericas = 'red'
+var dot_colorEurope = 'white'
+var dot_colorOceania = 'blue'
+var dot_colorAfrica = 'grey'
 
 function processData(data, minYear, maxYear) {
   // Filter data with range
   const filteredData = data.filter(
     (d) =>
-      d.StartYear >= minYear && d.StartYear <= maxYear && d.land_area > 5000
+      d.StartYear >= minYear && d.StartYear <= maxYear && d.land_area > 5000  
   );
 
   // group by country and some colums
@@ -196,7 +201,6 @@ function createScatterPlot(minYear, maxYear, country) {
         return d.disasters_per_area;
       });
 
-      console.log(maxX);
 
       var formatAbbreviation = d3.format(".2s");
       // axis X
@@ -299,7 +303,19 @@ function createScatterPlot(minYear, maxYear, country) {
           tooltip.transition().duration(100).style("opacity", 0);
           if (selectedCountry === d.Country) {
             d3.select(this).style("fill", selection_color);
-          } else {
+          }else if(d.Region === 'Asia') {
+            d3.select(this).style("fill", dot_colorAsia);
+          }else if(d.Region === 'Americas'){
+            d3.select(this).style("fill", dot_colorAmericas);
+          }else if(d.Region === 'Africa'){
+            d3.select(this).style("fill", dot_colorAfrica);
+          }else if(d.Region === 'Europe'){
+            d3.select(this).style("fill", dot_colorEurope);
+          }
+          else if(d.Region === 'Oceania'){
+            d3.select(this).style("fill", dot_colorOceania);
+          }
+          else {
             d3.select(this).style("fill", dot_color); // Volta à cor original
           }
         })

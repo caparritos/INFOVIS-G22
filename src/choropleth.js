@@ -10,7 +10,7 @@ function updateChoropleth(minYear, maxYear, country, globalFilter) {
 function processDataCloropleth(data, minYear, maxYear) {
   // Filtra os dados com base no intervalo de anos
   const filteredData = data.filter(
-    (d) => d.StartYear >= minYear && d.StartYear <= maxYear
+    (d) => d.StartYear >= minYear && d.StartYear <= maxYear 
   );
 
   // Agrupa por país e calcula as colunas necessárias
