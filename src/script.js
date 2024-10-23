@@ -4,11 +4,12 @@ var minYear = 2000;
 var maxYear = 2024;
 var country  = null;
 var globalFilter = "num_disasters" // "num_disasters" or "total_deaths"
+var selectedRegions = ['Asia', 'Americas', 'Africa', 'Europe', 'Oceania'];
 
 function updateCountry(newCountry) {
   country = newCountry;  // Atualiza o valor global de 'country'
   updateRadialChart(minYear, maxYear, country,globalFilter);  
-  updateScatterPlot(minYear, maxYear, country,globalFilter);  
+  updateScatterPlot(minYear, maxYear, country,selectedRegions);  
   updateChoropleth(minYear, maxYear, country,globalFilter);  
 }
 
@@ -39,7 +40,7 @@ function updateSlider(slider, type) {
         slider.parentNode.style.setProperty('--text-value-b', JSON.stringify(sliderMin.value));
       }
     }
-    updateScatterPlot(sliderMin.value, sliderMax.value,country,globalFilter);
+    updateScatterPlot(sliderMin.value, sliderMax.value,country,selectedRegions);
     updateRadialChart(sliderMin.value, sliderMax.value,country,globalFilter);
     updateChoropleth(sliderMin.value, sliderMax.value,country,globalFilter);
     minYear = sliderMin.value

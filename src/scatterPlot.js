@@ -4,19 +4,18 @@ function updateScatterPlot(minYear, maxYear,country) {
 } */
 
 var selection_color = "#1ed928"
-var dot_color = '#1F5F5B'
-var dot_colorAsia = 'yellow'
-var dot_colorAmericas = 'red'
-var dot_colorEurope = 'white'
-var dot_colorOceania = 'blue'
-var dot_colorAfrica = 'grey'
+var dot_color = '#1F5F5B' 
 
-function processData(data, minYear, maxYear) {
+function processData(data, minYear, maxYear,regions) {
   // Filter data with range
+  if(regions=== undefined){
+    regions = ['Asia', 'Americas', 'Africa', 'Europe', 'Oceania'];
+
+  }
   const filteredData = data.filter(
     (d) =>
-      d.StartYear >= minYear && d.StartYear <= maxYear && d.land_area > 5000  
-  );
+      d.StartYear >= minYear && d.StartYear <= maxYear && d.land_area > 5000 && regions.includes(d.Region) 
+  ); 
 
   // group by country and some colums
   const groupedData = filteredData.reduce((acc, current) => {
@@ -40,7 +39,7 @@ function processData(data, minYear, maxYear) {
 }
 
 // Function to create scatterplot
-function updateScatterPlot(minYear, maxYear, country) {
+function updateScatterPlot(minYear, maxYear, country,regions) {
   // Define margins
   var margin = { top: 5, right: 15, bottom: 50, left: 60 },
     width = 600,
@@ -52,7 +51,10 @@ function updateScatterPlot(minYear, maxYear, country) {
   // read csv
   d3.csv("satinize_dataset/pre-processing/disasters_per_country.csv").then(
     function (data) {
-      var filteredData = processData(data, minYear, maxYear);
+      var filteredData = processData(data, minYear, maxYear,regions);
+      console.log(filteredData)
+      console.log(regions)
+
 
       var maxY = d3.max(filteredData, function (d) {
         return d.total_deaths;
@@ -93,8 +95,9 @@ function updateScatterPlot(minYear, maxYear, country) {
         .attr("cy", function (d) {
           return y(d.total_deaths);
         })
-        .style("fill", (d) =>
-          d.Country === selectedCountry ? selection_color : dot_color
+        .style("fill", (d) =>{
+          return d.Country === selectedCountry ? selection_color : dot_color
+          }
         );
 
       circles
@@ -171,7 +174,8 @@ function updateScatterPlot(minYear, maxYear, country) {
   );
 }
 // Function to create scatterplot
-function createScatterPlot(minYear, maxYear, country) {
+function createScatterPlot(minYear, maxYear, country,regions) {
+
   // Remove svg if exste to avoid sobreposition
   d3.select("#scatterplot").select("svg").remove();
 
@@ -191,7 +195,7 @@ function createScatterPlot(minYear, maxYear, country) {
   // read csv
   d3.csv("satinize_dataset/pre-processing/disasters_per_country.csv").then(
     function (data) {
-      var filteredData = processData(data, minYear, maxYear);
+      var filteredData = processData(data, minYear, maxYear,regions);
 
       var maxY = d3.max(filteredData, function (d) {
         return d.total_deaths;

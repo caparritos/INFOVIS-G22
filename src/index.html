@@ -14,8 +14,8 @@
   </script>
   <script src="./pkg/topojson-client.min.js">
   </script>
-  <script src="./pkg/foundation.min.js" crossorigin="anonymous">
-  </script>
+  <script src="buttons.js"></script>
+  <script src="./pkg/foundation.min.js" crossorigin="anonymous"></script>
 </head>
 
 <body class="overflow-hidden">
@@ -72,13 +72,12 @@
       <input type="text" id="countrySearch" placeholder="Search for a country..." onkeyup="filterCountries()">
       <div id="dropdown" class="dropdown"></div>
     </div>
-    <div id="buttons"
-      style="display: flex; justify-content: flex-end; align-items: center; width: 100%; padding: 10px;">
-      <button style="margin-right: 10px;">Button 1</button>
-      <button style="margin-right: 10px;">Button 2</button>
-      <button style="margin-right: 10px;">Button 3</button>
-      <button style="margin-right: 10px;">Button 4</button>
-      <button style="margin-right: 10px;">Button 5</button>
+    <div id="controls">
+      <button class="region-btn selected" data-region="Asia">Asia</button>
+      <button class="region-btn selected" data-region="Americas">Americas</button>
+      <button class="region-btn selected" data-region="Africa">Africa</button>
+      <button class="region-btn selected" data-region="Europe">Europe</button>
+      <button class="region-btn selected" data-region="Oceania">Oceania</button>
     </div>
     
   </main>
