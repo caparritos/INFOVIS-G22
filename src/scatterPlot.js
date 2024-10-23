@@ -249,6 +249,7 @@ function createScatterPlot(minYear, maxYear, country) {
           "translate(" + width / 2 + " ," + (height + margin.bottom - 10) + ")"
         )
         .style("text-anchor", "middle")
+        .attr("font-size", "14px")
         .text("Disaster density per 10 000 km2 (logarithmic)");
       // Name of axis Y
       svg
@@ -258,6 +259,7 @@ function createScatterPlot(minYear, maxYear, country) {
         .attr("x", 0 - height / 2)
         .attr("dy", "-.5em")
         .style("text-anchor", "middle")
+        .attr("font-size", "14px")
         .text("Total Deaths (logarithmic)");
 
       var tooltip = d3.select("#tooltip"); // Select tooltip

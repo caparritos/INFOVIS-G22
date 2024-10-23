@@ -17,6 +17,17 @@ const PI = Math.PI,
 
 var radialChartData = undefined;
 
+const DisasterInfo = {
+  "Biological": "are mostly epidemics.",
+  "Climatological": "can be droughts or wildfires.",
+  "Geophysical": "can be earthquakes, volcanic activity or landslides.",
+  "Hydrological": "are mostly floods.",
+  "Industrial accident": "can be caused by chemical spills, gas leaks, oil spills, radiation, etc.",
+  "Meteorological": "can be extreme temperatures or storms.",
+  "Miscellaneous accident": "vary from collapse to explosions to fires.",
+  "Transport": "can be from plane crashes, train derailments, etc."
+}
+
 function createRadialChart(minYear, maxYear, country) {
   d3.select("#radialChart").selectAll("svg").remove();
 
@@ -150,13 +161,14 @@ function createRadialChart(minYear, maxYear, country) {
 
     radialAxis
       .append("text")
-      .attr("x", labelPadding)
+      .attr("x", labelPadding + 3)
       .attr(
         "y",
         (d, i) =>
           -getOuterRadius(i, numArcsNatural, arcWidthNatural) +
           arcPaddingNatural
       )
+      .attr("font-size", "14px")
       .text((d) => d.DisasterSubgroup);
 
     // Radial Axis
@@ -170,12 +182,13 @@ function createRadialChart(minYear, maxYear, country) {
 
     radialAxis2
       .append("text")
-      .attr("x", labelPadding)
+      .attr("x", labelPadding + 3)
       .attr(
         "y",
         (d, i) =>
           -getOuterRadius(i, numArcsTechnological, arcWidthTechnological) + 15
       )
+      .attr("font-size", "14px")
       .text((d) => d.DisasterSubgroup);
 
     // Axial Axis
@@ -291,7 +304,7 @@ function showTooltip(event, d, tooltip) {
   tooltip
     .html(
       `<strong>${country || 'World'}</strong><br>
-
+      <span style="font-size: 13px; color: #313538;">${d.DisasterSubgroup} disasters ${DisasterInfo[d.DisasterSubgroup]}<br></span>
       ${d[globalFilter] < 500 ? d[globalFilter] : formatNumber(d[globalFilter])} ${
         globalFilter === "num_disasters" ? "disasters" : "deaths"
       }`
