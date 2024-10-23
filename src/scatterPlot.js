@@ -148,12 +148,12 @@ function updateScatterPlot(minYear, maxYear, country,regions) {
             updateRadialChart(minYear, maxYear, null, globalFilter); // Atualiza o gráfico radial com valores nulos
             updateChoropleth(minYear, maxYear, null, globalFilter); // Atualiza o choropleth com valores nulos
           } else {
-            // Se o país não está selecionado, seleciona-o
-            selectedCountry = d.Country; // Atualiza o país selecionado
+            
+            selectedCountry = d.Country; 
             updateCountry(selectedCountry);
             selectCountryInSearch(selectedCountry);
-            updateRadialChart(minYear, maxYear, selectedCountry, globalFilter); // Atualiza o gráfico radial
-            updateChoropleth(minYear, maxYear, selectedCountry, globalFilter); // Atualiza o choropleth
+            updateRadialChart(minYear, maxYear, selectedCountry, globalFilter); 
+            updateChoropleth(minYear, maxYear, selectedCountry, globalFilter); 
 
             // Atualiza a cor dos círculos
             svg
@@ -255,7 +255,7 @@ function createScatterPlot(minYear, maxYear, country,regions) {
         )
         .style("text-anchor", "middle")
         .attr("font-size", "14px")
-        .text("Disaster density per 10 000 km2 (logarithmic)");
+        .text("Disaster density per 10 K km2 (logarithmic)");
       // Name of axis Y
       svg
         .append("text")
