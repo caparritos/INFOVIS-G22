@@ -42,6 +42,8 @@ function updateSlider(slider, type) {
     updateScatterPlot(sliderMin.value, sliderMax.value,country,globalFilter);
     updateRadialChart(sliderMin.value, sliderMax.value,country,globalFilter);
     updateChoropleth(sliderMin.value, sliderMax.value,country,globalFilter);
+    minYear = sliderMin.value
+    maxYear = sliderMax.value
   }
 
   // Função para lidar com a mudança de filtro
