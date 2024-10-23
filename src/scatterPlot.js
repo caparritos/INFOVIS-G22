@@ -142,7 +142,7 @@ function updateScatterPlot(minYear, maxYear, country,regions) {
 
             // Atualiza a cor dos círculos para o estado não selecionado
             svg.selectAll("circle").style("fill", dot_color); // Cor padrão dos círculos
-
+            selectCountryInSearch(selectedCountry);
             // Aqui você pode querer também limpar ou resetar outros gráficos, se necessário
             updateCountry(null); // Atualiza o país, se necessário
             updateRadialChart(minYear, maxYear, null, globalFilter); // Atualiza o gráfico radial com valores nulos
@@ -151,6 +151,7 @@ function updateScatterPlot(minYear, maxYear, country,regions) {
             // Se o país não está selecionado, seleciona-o
             selectedCountry = d.Country; // Atualiza o país selecionado
             updateCountry(selectedCountry);
+            selectCountryInSearch(selectedCountry);
             updateRadialChart(minYear, maxYear, selectedCountry, globalFilter); // Atualiza o gráfico radial
             updateChoropleth(minYear, maxYear, selectedCountry, globalFilter); // Atualiza o choropleth
 
