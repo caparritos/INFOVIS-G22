@@ -1,10 +1,13 @@
 var selectedCountry = null;
 var previousCountry = null;
 
+let geoData, disasterData;
+
 function updateChoropleth(minYear, maxYear, country, globalFilter) {
   selectedCountry = country;
   previousCountry = country;
   drawMap(minYear, maxYear, country, globalFilter);
+  //updateMap(minYear, maxYear, country, globalFilter);
 }
 
 function processDataCloropleth(data, minYear, maxYear) {
@@ -36,7 +39,26 @@ function processDataCloropleth(data, minYear, maxYear) {
   return Object.values(groupedData);
 }
 
+function updateMap(minYear, maxYear, country, globalFilter) {
+  const filteredData = processDataCloropleth(disasterData, minYear, maxYear);
+  const dataMap = new Map();
+  filteredData.forEach((d) => {
+    dataMap.set(d.Country, d[globalFilter]);
+  });
+  console.log(dataMap);
+  // Update the fill color of the countries with the new data
+  // svg
+  //   .selectAll("path")
+  //   .transition() // Add transition for smooth color change
+  //   .duration(500)
+  //   .attr("fill", (d) => {
+  //     const countryCode = d.properties.name; // Assuming ISO_A3 in geojson properties
+  //     return color(newData[countryCode] || 0); // Update fill color
+  //   });
+}
+
 function drawMap(minYear, maxYear, country, globalFilter) {
+  console.log("hehe");
   const missingDataColor = "#d9d9d9";
   const selectedCountryColor = "#1ed928";
 
@@ -103,6 +125,8 @@ function drawMap(minYear, maxYear, country, globalFilter) {
     }),
   ])
     .then(([topo, disasters]) => {
+      geoData = topo; // Save geojson data
+      disasterData = disasters; // Save CSV data
       // Filtrar dados conforme minYear, maxYear e opcionalmente o país
       const filteredData = processDataCloropleth(disasters, minYear, maxYear);
       // Mapa para armazenar os dados de desastres por país
@@ -187,7 +211,6 @@ function drawMap(minYear, maxYear, country, globalFilter) {
             if (count === 0) return missingDataColor;
 
             // Apply the color scale for all other countries
-            console.log(colorScale(9));
             return colorScale(count);
           });
 
@@ -255,9 +278,9 @@ function drawMap(minYear, maxYear, country, globalFilter) {
         legendGroup
           .append("line")
           .attr("x1", 0)
-          .attr("y1", (legendHeight / colorScale.range().length) * (i+1))
+          .attr("y1", (legendHeight / colorScale.range().length) * (i + 1))
           .attr("x2", legendWidth + 5)
-          .attr("y2", (legendHeight / colorScale.range().length) * (i+1))
+          .attr("y2", (legendHeight / colorScale.range().length) * (i + 1))
           .attr("stroke", "#000") // Line color
           .attr("stroke-width", 1); // Line width
       });
