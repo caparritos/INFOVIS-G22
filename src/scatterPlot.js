@@ -309,17 +309,6 @@ function createScatterPlot(minYear, maxYear, country,regions) {
           tooltip.transition().duration(100).style("opacity", 0);
           if (selectedCountry === d.Country) {
             d3.select(this).style("fill", selection_color);
-          }else if(d.Region === 'Asia') {
-            d3.select(this).style("fill", dot_colorAsia);
-          }else if(d.Region === 'Americas'){
-            d3.select(this).style("fill", dot_colorAmericas);
-          }else if(d.Region === 'Africa'){
-            d3.select(this).style("fill", dot_colorAfrica);
-          }else if(d.Region === 'Europe'){
-            d3.select(this).style("fill", dot_colorEurope);
-          }
-          else if(d.Region === 'Oceania'){
-            d3.select(this).style("fill", dot_colorOceania);
           }
           else {
             d3.select(this).style("fill", dot_color); // Volta à cor original

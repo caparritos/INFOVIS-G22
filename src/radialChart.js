@@ -3,9 +3,9 @@ const width = 340,
   height = 320,
   chartRadius = height / 2 - 40;
 
-// COLOR OF BARS
-const colorNatural = "#fc8d62";
-const colorTechnological = "#1f78b4";
+
+  var colorNatural = '#1F5F5B'
+  var colorTechnological ='#1F5F5B'
 
 const PI = Math.PI,
   arcMinRadius = 10,
