@@ -1,10 +1,14 @@
 //import { svg } from "d3-fetch";
 
 let mapDrawn = false;
+let updateScale = true;
+
 var selectedCountry = null;
 var previousCountry = null;
 
 let geoData, disasterData;
+let svg;
+let legendGroup;
 
 function updateChoropleth(minYear, maxYear, country, globalFilter) {
   selectedCountry = country;
@@ -50,7 +54,7 @@ function updateMap(minYear, maxYear, country, globalFilter) {
   filteredData.forEach((d) => {
     dataMap.set(d.Country, d[globalFilter]);
   });
-  console.log(globalFilter);
+  //console.log(globalFilter);
 
   g.selectAll("path").attr("fill", (d) => {
     const countryName = d.properties.name;
@@ -71,16 +75,6 @@ function updateMap(minYear, maxYear, country, globalFilter) {
     // Apply the color scale for all other countries
     return colorScale(count);
   });
-
-  // Update the fill color of the countries with the new data
-  // svg
-  //   .selectAll("path")
-  //   .transition() // Add transition for smooth color change
-  //   .duration(500)
-  //   .attr("fill", (d) => {
-  //     const countryCode = d.properties.name; // Assuming ISO_A3 in geojson properties
-  //     return color(newData[countryCode] || 0); // Update fill color
-  //   });
 }
 
 function drawMap(minYear, maxYear, country, globalFilter) {
@@ -119,7 +113,7 @@ function drawMap(minYear, maxYear, country, globalFilter) {
 
   if (!mapDrawn) {
     d3.select("#choropleth").select("svg").remove();
-    const svg = d3
+    svg = d3
       .select("#choropleth")
       .append("svg")
       .attr("width", 730)
@@ -139,8 +133,21 @@ function drawMap(minYear, maxYear, country, globalFilter) {
 
     path = d3.geoPath().projection(projection);
 
+    // Add zoom functionality
+    const zoom = d3
+      .zoom()
+      .scaleExtent([1, 8]) // Define a escala mínima e máxima
+      .on("zoom", (event) => {
+        g.attr("transform", event.transform); // Aplica a transformação de zoom ao grupo
+      });
+
+    svg.call(zoom); // Aplica o zoom ao SVG
+  }
+
+  if (updateScale) {
     // Criar um grupo para a escala
-    const legendGroup = svg.append("g").attr("transform", "translate(30, 40)"); // Ajuste a posição conforme necessário
+    legendGroup = svg.append("g").attr("transform", "translate(30, 40)"); // Ajuste a posição conforme necessário
+    //console.log(legendGroup);
 
     const legendHeight = 300;
     const legendWidth = 20;
@@ -192,25 +199,8 @@ function drawMap(minYear, maxYear, country, globalFilter) {
       .attr("font-size", "14px")
       .text(globalFilter == "num_disasters" ? "Disasters" : "Deaths"); // O menor valor
 
-    // Adicionar rótulo do valor máximo
-    // legendGroup
-    //   .append("text")
-    //   .attr("x", legendWidth + 5)
-    //   .attr("y", legendHeight - 5) // Último rótulo na parte inferior
-    //   .text(d3.max(ticks)); // O maior valor no domínio
-
-    // Add zoom functionality
-    const zoom = d3
-      .zoom()
-      .scaleExtent([1, 8]) // Define a escala mínima e máxima
-      .on("zoom", (event) => {
-        g.attr("transform", event.transform); // Aplica a transformação de zoom ao grupo
-      });
-
-    svg.call(zoom); // Aplica o zoom ao SVG
+    updateScale = false;
   }
-
-  
 
   // Criação de um grupo para aplicar o zoom
 

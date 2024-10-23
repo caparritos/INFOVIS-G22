@@ -52,8 +52,10 @@ function changeFilter(button, filter) {
   const buttons = document.querySelectorAll('.globalFilter-button');
   buttons.forEach(btn => btn.classList.remove('active'));
   button.classList.add('active');
-  updateChoropleth(minYear, maxYear, country,filter)
-  updateRadialChart(minYear, maxYear, country,filter)
+  updateScale = true;
+  legendGroup.remove();
+  updateChoropleth(minYear, maxYear, country, filter)
+  updateRadialChart(minYear, maxYear, country, filter)
 }
   
 
