@@ -1113,3 +1113,41 @@ path.arc:hover {
   background-color: #28a745; /* Cor verde para o botão ativo */
   color: white;
 }
+
+/* Style for search bar */
+.search-container {
+  width: 180px;
+  margin: 0px auto;
+  position: relative;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Style for dropdown */
+.dropdown {
+  position: absolute;
+  top: 40px;
+  width: 100%;
+  max-height: 100px;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  background-color: white;
+  overflow-y: auto;
+  display: none;
+  z-index: 1;
+}
+
+.dropdown div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown div:hover {
+  background-color: #f0f0f0;
+}

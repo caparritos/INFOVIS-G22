@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Country Search Dropdown</title>
+  <style>
+    /* Style for search bar */
+    .search-container {
+      width: 200px;
+      margin: 20px auto;
+      position: relative;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    /* Style for dropdown */
+    .dropdown {
+      position: absolute;
+      top: 40px;
+      width: 100%;
+      max-height: 150px;
+      border: 1px solid #ccc;
+      border-top: none;
+      border-radius: 0 0 5px 5px;
+      background-color: white;
+      overflow-y: auto;
+      display: none;
+      z-index: 1;
+    }
+
+    .dropdown div {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .dropdown div:hover {
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="search-container">
+    <input type="text" id="countrySearch" placeholder="Search for a country..." onkeyup="filterCountries()">
+    <div id="dropdown" class="dropdown"></div>
+  </div>
+
+  <script>
+    // List of countries
+    const countries = ["United States", "Canada", "United Kingdom", "Australia", "Germany", "France", "Japan", "China", "India", "Brazil", "Russia", "South Africa", "Mexico", "Italy", "Spain"];
+
+    // Populate the dropdown with the list of countries
+    function populateDropdown() {
+      const dropdown = document.getElementById("dropdown");
+      dropdown.innerHTML = "";  // Clear any existing options
+      countries.forEach(country => {
+        const div = document.createElement("div");
+        div.textContent = country;
+        div.onclick = () => selectCountry(country);  // Set click handler
+        dropdown.appendChild(div);
+      });
+    }
+
+    // Filter the dropdown based on the search input
+    function filterCountries() {
+      const input = document.getElementById("countrySearch").value.toLowerCase();
+      const dropdown = document.getElementById("dropdown");
+      const filteredCountries = countries.filter(country => country.toLowerCase().includes(input));
+
+      if (filteredCountries.length === 0 || input === "") {
+        dropdown.style.display = "none";
+      } else {
+        dropdown.style.display = "block";
+        dropdown.innerHTML = ""; // Clear the dropdown
+        filteredCountries.forEach(country => {
+          const div = document.createElement("div");
+          div.textContent = country;
+          div.onclick = () => selectCountry(country);  // Set click handler
+          dropdown.appendChild(div);
+        });
+      }
+    }
+
+    // Handle selection of a country
+    function selectCountry(country) {
+      document.getElementById("countrySearch").value = country;
+      document.getElementById("dropdown").style.display = "none";  // Hide dropdown
+    }
+
+    // Initialize dropdown
+    populateDropdown();
+  </script>
+
+</body>
+</html>

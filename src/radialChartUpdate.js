@@ -41,7 +41,7 @@ function updateRadialChart(minYear, maxYear, country, globalFilter) {
 
   if (groupedDataNatural.length === 0) {
     groupedDataNatural = [
-      { DisasterSubgroup: "No Data", num_disasters: 0, total_deaths: 0 },
+      { DisasterSubgroup: "NO DATA", num_disasters: 0, total_deaths: 0 },
     ];
   }
 
@@ -56,7 +56,7 @@ function updateRadialChart(minYear, maxYear, country, globalFilter) {
 
   if (groupedDataTechnological.length === 0) {
 	groupedDataTechnological = [
-	  { DisasterSubgroup: "No Data", num_disasters: 0, total_deaths: 0 },
+	  { DisasterSubgroup: "NO DATA", num_disasters: 0, total_deaths: 0 },
 	];
   }
 

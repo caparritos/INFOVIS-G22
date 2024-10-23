@@ -324,6 +324,7 @@ function createScatterPlot(minYear, maxYear, country) {
           if (selectedCountry === d.Country) {
             // Se o país já está selecionado, deselect
             selectedCountry = null; // Reseta a seleção
+            selectCountryInSearch(selectedCountry);
 
             // Atualiza a cor dos círculos para o estado não selecionado
             svg.selectAll("circle").style("fill", dot_color); // Cor padrão dos círculos
@@ -335,6 +336,7 @@ function createScatterPlot(minYear, maxYear, country) {
           } else {
             // Se o país não está selecionado, seleciona-o
             selectedCountry = d.Country; // Atualiza o país selecionado
+            selectCountryInSearch(selectedCountry);
             updateCountry(selectedCountry);
             updateRadialChart(minYear, maxYear, selectedCountry, globalFilter); // Atualiza o gráfico radial
             updateChoropleth(minYear, maxYear, selectedCountry, globalFilter); // Atualiza o choropleth

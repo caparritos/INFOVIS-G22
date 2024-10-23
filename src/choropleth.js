@@ -338,11 +338,13 @@ function drawMap(minYear, maxYear, country, globalFilter) {
           }
 
           // Atualiza os gráficos
-          console.log("update");
           updateCountry(selectedCountry);
+          selectCountryInSearch(selectedCountry);
           updateRadialChart(minYear, maxYear, selectedCountry, globalFilter);
           updateScatterPlot(minYear, maxYear, selectedCountry);
         });
+      // Initialize the search box
+      initializeSearchBox(topo.features);
     })
     .catch((err) => {
       console.error("Error loading the data: ", err);

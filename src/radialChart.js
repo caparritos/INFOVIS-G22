@@ -26,7 +26,7 @@ const DisasterInfo = {
   "Meteorological": "can be extreme temperatures or storms.",
   "Miscellaneous accident": "vary from collapse to explosions to fires.",
   "Transport": "can be from plane crashes, train derailments, etc.",
-  "No Data": ""
+  "NO DATA": ""
 }
 
 function createRadialChart(minYear, maxYear, country) {
