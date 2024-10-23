@@ -1,7 +1,12 @@
+//import { svg } from "d3-fetch";
+
+let mapDrawn = false;
 var selectedCountry = null;
 var previousCountry = null;
 
 let geoData, disasterData;
+
+let g, colorScale;
 
 function updateChoropleth(minYear, maxYear, country, globalFilter) {
   selectedCountry = country;
@@ -40,12 +45,35 @@ function processDataCloropleth(data, minYear, maxYear) {
 }
 
 function updateMap(minYear, maxYear, country, globalFilter) {
+  const missingDataColor = "#d9d9d9";
+  const selectedCountryColor = "#1ed928";
   const filteredData = processDataCloropleth(disasterData, minYear, maxYear);
   const dataMap = new Map();
   filteredData.forEach((d) => {
     dataMap.set(d.Country, d[globalFilter]);
   });
-  console.log(dataMap);
+  console.log(globalFilter);
+
+  g.selectAll("path").attr("fill", (d) => {
+    const countryName = d.properties.name;
+    var countryData = filteredData.filter(
+      (e) => e.Country == d.properties.name
+    );
+    var count = countryData == 0 ? 0 : countryData[0].num_disasters;
+    if (globalFilter == "total_deaths") {
+      count = countryData == 0 ? 0 : countryData[0].total_deaths;
+    }
+
+    // Use teal for the selected country
+    if (country === countryName) return selectedCountryColor;
+
+    // Use gray for missing data
+    if (count === 0) return missingDataColor;
+
+    // Apply the color scale for all other countries
+    return colorScale(count);
+  });
+
   // Update the fill color of the countries with the new data
   // svg
   //   .selectAll("path")
@@ -58,31 +86,34 @@ function updateMap(minYear, maxYear, country, globalFilter) {
 }
 
 function drawMap(minYear, maxYear, country, globalFilter) {
-  console.log("hehe");
   const missingDataColor = "#d9d9d9";
   const selectedCountryColor = "#1ed928";
 
-  d3.select("#choropleth").select("svg").remove();
-  const svg = d3
-    .select("#choropleth")
-    .append("svg")
-    .attr("width", 730)
-    .attr("height", 450);
+  // let path;
+  // if (!mapDrawn) {
+    d3.select("#choropleth").select("svg").remove();
+    const svg = d3
+      .select("#choropleth")
+      .append("svg")
+      .attr("width", 730)
+      .attr("height", 450);
 
-  const width = 830;
-  const height = 600;
+    const width = 830;
+    const height = 600;
 
-  // Mapa e projeção
-  const projection = d3
-    .geoMercator()
-    .scale(100)
-    .center([0, 20])
-    .translate([width / 2, height / 2]);
+    // Mapa e projeção
+    const projection = d3
+      .geoMercator()
+      .scale(100)
+      .center([0, 20])
+      .translate([width / 2, height / 2]);
 
-  const path = d3.geoPath().projection(projection);
+    g = svg.append("g");
+     
+    path = d3.geoPath().projection(projection);
+  // }
 
-  // Escala de cores baseada no número de desastres
-  const colorScale =
+  colorScale =
     globalFilter === "num_disasters"
       ? d3
           .scaleThreshold()
@@ -113,7 +144,6 @@ function drawMap(minYear, maxYear, country, globalFilter) {
           ]);
 
   // Criação de um grupo para aplicar o zoom
-  const g = svg.append("g");
 
   // Carregar dados externos e inicializar o mapa
   Promise.all([
@@ -249,6 +279,7 @@ function drawMap(minYear, maxYear, country, globalFilter) {
           }
 
           // Atualiza os gráficos
+          console.log("update");
           updateCountry(selectedCountry);
           updateRadialChart(minYear, maxYear, selectedCountry, globalFilter);
           updateScatterPlot(minYear, maxYear, selectedCountry);
@@ -295,6 +326,7 @@ function drawMap(minYear, maxYear, country, globalFilter) {
             .attr("x", legendWidth + 10) // Posição do rótulo à direita dos retângulos
             .attr("y", (legendHeight / colorScale.range().length) * (i + 1)) // Centraliza verticalmente
             .attr("dy", ".35em") // Alinha verticalmente ao centro
+            .attr("font-size", "13px")
             .text(tick < 500 ? tick : d3.format(".1~s")(tick)); // Formatação dos rótulos
         }
       });
@@ -302,8 +334,9 @@ function drawMap(minYear, maxYear, country, globalFilter) {
       // Add label
       legendGroup
         .append("text")
-        .attr("x", legendWidth - 30)
-        .attr("y", legendHeight + 40) // Primeiro rótulo na parte superior
+        .attr("x", legendWidth - 20)
+        .attr("y", -10) // Primeiro rótulo na parte superior
+        .attr("font-size", "14px")
         .text(globalFilter == "num_disasters" ? "Disasters" : "Deaths"); // O menor valor
 
       // Adicionar rótulo do valor máximo
@@ -326,6 +359,7 @@ function drawMap(minYear, maxYear, country, globalFilter) {
     .catch((err) => {
       console.error("Error loading the data: ", err);
     });
+    mapDrawn = true;
 }
 // Executa o drawMap quando o DOM estiver totalmente carregado
 document.addEventListener("DOMContentLoaded", function () {
