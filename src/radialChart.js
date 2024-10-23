@@ -25,7 +25,8 @@ const DisasterInfo = {
   "Industrial accident": "can be caused by chemical spills, gas leaks, oil spills, radiation, etc.",
   "Meteorological": "can be extreme temperatures or storms.",
   "Miscellaneous accident": "vary from collapse to explosions to fires.",
-  "Transport": "can be from plane crashes, train derailments, etc."
+  "Transport": "can be from plane crashes, train derailments, etc.",
+  "No Data": ""
 }
 
 function createRadialChart(minYear, maxYear, country) {
@@ -86,7 +87,7 @@ function createRadialChart(minYear, maxYear, country) {
     );
 
     // Group by 'DisasterSubgroup' and sum frequency
-    const groupedDataNatural = Array.from(
+    let groupedDataNatural = Array.from(
       d3.group(dataNatural, (d) => d.DisasterSubgroup),
       ([key, values]) => ({
         DisasterSubgroup: key,
@@ -95,7 +96,7 @@ function createRadialChart(minYear, maxYear, country) {
       })
     ).sort((a, b) => b[globalFilter] - a[globalFilter]);
 
-    const groupedDataTechnological = Array.from(
+    let groupedDataTechnological = Array.from(
       d3.group(dataTechnological, (d) => d.DisasterSubgroup),
       ([key, values]) => ({
         DisasterSubgroup: key,
@@ -213,7 +214,9 @@ function createRadialChart(minYear, maxYear, country) {
         "transform",
         (d) => `rotate(${90 - rad2deg(scaleNatural(d))},${chartRadius + 10},0)`
       )
-      .text(d => !Number.isInteger(d) ? "" : d < 500 ? d : d3.format(".2~s")(d));
+      .text((d) =>
+        !Number.isInteger(d) ? "" : d < 500 ? d : d3.format(".2~s")(d)
+      );
 
     // Axial Axis
     const axialAxis2 = svg2
@@ -242,7 +245,9 @@ function createRadialChart(minYear, maxYear, country) {
         "transform",
         (d) => `rotate(${90 - rad2deg(scaleTechnological(d))},${chartRadius},0)`
       )
-      .text(d => !Number.isInteger(d) ? "" : d < 500 ? d : d3.format(".2~s")(d));
+      .text((d) =>
+        !Number.isInteger(d) ? "" : d < 500 ? d : d3.format(".2~s")(d)
+      );
 
     // Data Arcs
     const arcs = svg
@@ -303,11 +308,13 @@ function showTooltip(event, d, tooltip) {
 
   tooltip
     .html(
-      `<strong>${country || 'World'}</strong><br>
-      <span style="font-size: 13px; color: #313538;">${d.DisasterSubgroup} disasters ${DisasterInfo[d.DisasterSubgroup]}<br></span>
-      ${d[globalFilter] < 500 ? d[globalFilter] : formatNumber(d[globalFilter])} ${
-        globalFilter === "num_disasters" ? "disasters" : "deaths"
-      }`
+      `<strong>${country || "World"}</strong><br>
+      <span style="font-size: 13px; color: #313538;">${
+        d.DisasterSubgroup
+      } disasters ${DisasterInfo[d.DisasterSubgroup]}<br></span>
+      ${
+        d[globalFilter] < 500 ? d[globalFilter] : formatNumber(d[globalFilter])
+      } ${globalFilter === "num_disasters" ? "disasters" : "deaths"}`
     )
     .style("left", event.clientX + 10 + "px")
     .style("top", event.clientY - 20 + "px");
