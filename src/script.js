@@ -24,21 +24,21 @@ function updateSlider(slider, type) {
       slider.parentNode.style.setProperty('--text-value-a', JSON.stringify(slider.value));
   
       // Ensure the min slider doesn't go above the max slider
-      if (parseInt(sliderMin.value) > parseInt(sliderMax.value)) {
-        sliderMin.value = sliderMax.value;
-        slider.parentNode.style.setProperty('--value-a', sliderMax.value);
-        slider.parentNode.style.setProperty('--text-value-a', JSON.stringify(sliderMax.value));
-      }
+      // if (parseInt(sliderMin.value) > parseInt(sliderMax.value)) {
+      //   sliderMin.value = sliderMax.value;
+      //   slider.parentNode.style.setProperty('--value-a', sliderMax.value);
+      //   slider.parentNode.style.setProperty('--text-value-a', JSON.stringify(sliderMax.value));
+      // }
     } else {
       slider.parentNode.style.setProperty('--value-b', slider.value);
       slider.parentNode.style.setProperty('--text-value-b', JSON.stringify(slider.value));
   
       // Ensure the max slider doesn't go below the min slider
-      if (parseInt(sliderMax.value) < parseInt(sliderMin.value)) {
-        sliderMax.value = sliderMin.value;
-        slider.parentNode.style.setProperty('--value-b', sliderMin.value);
-        slider.parentNode.style.setProperty('--text-value-b', JSON.stringify(sliderMin.value));
-      }
+      // if (parseInt(sliderMax.value) < parseInt(sliderMin.value)) {
+      //   sliderMax.value = sliderMin.value;
+      //   slider.parentNode.style.setProperty('--value-b', sliderMin.value);
+      //   slider.parentNode.style.setProperty('--text-value-b', JSON.stringify(sliderMin.value));
+      // }
     }
     updateScatterPlot(sliderMin.value, sliderMax.value,country,selectedRegions);
     updateRadialChart(sliderMin.value, sliderMax.value,country,globalFilter);
