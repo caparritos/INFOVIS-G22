@@ -40,11 +40,11 @@ function updateSlider(slider, type) {
       //   slider.parentNode.style.setProperty('--text-value-b', JSON.stringify(sliderMin.value));
       // }
     }
-    updateScatterPlot(sliderMin.value, sliderMax.value,country,selectedRegions);
-    updateRadialChart(sliderMin.value, sliderMax.value,country,globalFilter);
-    updateChoropleth(sliderMin.value, sliderMax.value,country,globalFilter);
-    minYear = sliderMin.value
-    maxYear = sliderMax.value
+    updateScatterPlot(Math.min(sliderMin.value, sliderMax.value), Math.max(sliderMin.value, sliderMax.value), country,globalFilter);
+    updateRadialChart(Math.min(sliderMin.value, sliderMax.value), Math.max(sliderMin.value, sliderMax.value), country,globalFilter);
+    updateChoropleth(Math.min(sliderMin.value, sliderMax.value), Math.max(sliderMin.value, sliderMax.value), country,globalFilter);
+    minYear = Math.min(sliderMin.value, sliderMax.value)
+    maxYear = Math.max(sliderMin.value, sliderMax.value)
   }
 
   // Função para lidar com a mudança de filtro
