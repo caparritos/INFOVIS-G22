@@ -52,8 +52,6 @@ function updateScatterPlot(minYear, maxYear, country,regions) {
   d3.csv("satinize_dataset/pre-processing/disasters_per_country.csv").then(
     function (data) {
       var filteredData = processData(data, minYear, maxYear,regions);
-      console.log(filteredData)
-      console.log(regions)
 
 
       var maxY = d3.max(filteredData, function (d) {
