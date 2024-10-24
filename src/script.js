@@ -40,7 +40,7 @@ function updateSlider(slider, type) {
       //   slider.parentNode.style.setProperty('--text-value-b', JSON.stringify(sliderMin.value));
       // }
     }
-    updateScatterPlot(Math.min(sliderMin.value, sliderMax.value), Math.max(sliderMin.value, sliderMax.value), country,globalFilter);
+    updateScatterPlot(Math.min(sliderMin.value, sliderMax.value), Math.max(sliderMin.value, sliderMax.value), country,selectedRegions);
     updateRadialChart(Math.min(sliderMin.value, sliderMax.value), Math.max(sliderMin.value, sliderMax.value), country,globalFilter);
     updateChoropleth(Math.min(sliderMin.value, sliderMax.value), Math.max(sliderMin.value, sliderMax.value), country,globalFilter);
     minYear = Math.min(sliderMin.value, sliderMax.value)
