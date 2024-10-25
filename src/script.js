@@ -8,9 +8,9 @@ var selectedRegions = ['Asia', 'Americas', 'Africa', 'Europe', 'Oceania'];
 
 function updateCountry(newCountry) {
   country = newCountry;  // Atualiza o valor global de 'country'
-  updateRadialChart(minYear, maxYear, country,globalFilter);  
-  updateScatterPlot(minYear, maxYear, country,selectedRegions);  
-  updateChoropleth(minYear, maxYear, country,globalFilter);  
+  updateRadialChart(minYear, maxYear, country, globalFilter);  
+  updateScatterPlot(minYear, maxYear, country, selectedRegions);  
+  updateChoropleth(minYear, maxYear, country, globalFilter);  
 }
 
 // slider prevent max > min

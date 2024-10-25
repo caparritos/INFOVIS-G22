@@ -322,6 +322,13 @@ function drawMap(minYear, maxYear, country, globalFilter) {
             // Reseta as variáveis de seleção
             previousCountry = null;
             selectedCountry = null; // ou algum valor padrão
+
+            // Atualiza os gráficos
+            selectCountryInSearch(selectedCountry);
+            updateCountry(selectedCountry);
+            updateRadialChart(minYear, maxYear, selectedCountry, globalFilter); // Atualiza o gráfico radial
+            updateChoropleth(minYear, maxYear, selectedCountry, globalFilter); // Atualiza o choropleth
+
           } else {
             // Se houver um país anteriormente selecionado, restauramos sua cor original
             if (previousCountry) {
@@ -335,13 +342,14 @@ function drawMap(minYear, maxYear, country, globalFilter) {
             d3.select(this).attr("fill", "red");
             previousCountry = countryName;
             selectedCountry = countryName;
-          }
 
-          // Atualiza os gráficos
-          updateCountry(selectedCountry);
-          selectCountryInSearch(selectedCountry);
-          updateRadialChart(minYear, maxYear, selectedCountry, globalFilter);
-          updateScatterPlot(minYear, maxYear, selectedCountry);
+            // Atualiza os gráficos
+            selectCountryInSearch(selectedCountry);
+            updateCountry(selectedCountry);
+            updateRadialChart(minYear, maxYear, selectedCountry, globalFilter); // Atualiza o gráfico radial
+            updateChoropleth(minYear, maxYear, selectedCountry, globalFilter); // Atualiza o choropleth
+
+          }
         });
       // Initialize the search box
       initializeSearchBox(topo.features);

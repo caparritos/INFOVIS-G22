@@ -301,15 +301,16 @@ function createScatterPlot(minYear, maxYear, country,regions) {
             )
             .style("left", event.clientX - 180 + "px")
             .style("top", event.clientY - 88 + "px");
-          d3.select(this).style("fill", "#fc8d62");
+          d3.select(this).style("fill", "#fc8d62")
+          .attr("r", 5); // Change dot size
         })
         .on("mouseout", function (e, d) {
           tooltip.transition().duration(100).style("opacity", 0);
           if (selectedCountry === d.Country) {
-            d3.select(this).style("fill", selection_color);
+            d3.select(this).style("fill", selection_color).attr("r", 3); // Change dot size;
           }
           else {
-            d3.select(this).style("fill", dot_color); // Volta à cor original
+            d3.select(this).style("fill", dot_color).attr("r", 3); // Change dot size; // Volta à cor original
           }
         })
         .on("click", (event, d) => {
@@ -319,7 +320,8 @@ function createScatterPlot(minYear, maxYear, country,regions) {
             selectCountryInSearch(selectedCountry);
 
             // Atualiza a cor dos círculos para o estado não selecionado
-            svg.selectAll("circle").style("fill", dot_color); // Cor padrão dos círculos
+            svg.selectAll("circle").style("fill", dot_color) // Cor padrão dos círculos
+            .attr("r", 3); // Default size
 
             // Aqui você pode querer também limpar ou resetar outros gráficos, se necessário
             updateCountry(null); // Atualiza o país, se necessário
@@ -336,8 +338,8 @@ function createScatterPlot(minYear, maxYear, country,regions) {
             // Atualiza a cor dos círculos
             svg
               .selectAll("circle")
-              .style("fill", (d) =>
-                d.Country === selectedCountry ? selection_color : dot_color
+              .style("fill", (d) => d.Country === selectedCountry ? selection_color : dot_color)
+              .attr("r", (d) => d.Country === selectedCountry ? 5 : 3 // Larger size if selected
               );
           }
         });
