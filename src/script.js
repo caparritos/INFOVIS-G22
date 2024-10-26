@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Reset the other button
     btnDeaths.style.borderColor = "#ae017e";  
-    btnDeaths.style.opacity = "0.5";  // Slightly reduce opacity for a grayed effect
+    btnDeaths.style.opacity = "0.4";  // Slightly reduce opacity for a grayed effect
     
   });
 
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Reset the other button
       btnDisasters.style.borderColor = "#006fdd";
-      btnDisasters.style.opacity = "0.5";  // Slightly reduce opacity for a grayed effect
+      btnDisasters.style.opacity = "0.4";  // Slightly reduce opacity for a grayed effect
   });
 });
   
