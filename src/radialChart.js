@@ -309,12 +309,8 @@ function showTooltip(event, d, tooltip) {
   tooltip
     .html(
       `<strong>${country || "World"}</strong><br>
-      <span style="font-size: 13px; color: #313538;">${
-        d.DisasterSubgroup
-      } disasters ${DisasterInfo[d.DisasterSubgroup]}<br></span>
-      ${
-        d[globalFilter] < 500 ? d[globalFilter] : formatNumber(d[globalFilter])
-      } ${globalFilter === "num_disasters" ? "disasters" : "deaths"}`
+      ${d[globalFilter] < 500 ? d[globalFilter] : formatNumber(d[globalFilter])} ${globalFilter === "num_disasters" ? "disasters" : "deaths"}<br><br>
+      <span style="font-size: 13px; color: #313538;">${d.DisasterSubgroup} disasters ${DisasterInfo[d.DisasterSubgroup]}</span>`
     )
     .style("left", event.clientX + 10 + "px")
     .style("top", event.clientY - 20 + "px");

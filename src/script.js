@@ -64,16 +64,36 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnDisasters = document.getElementById("Number-Disasters");
   const btnDeaths = document.getElementById("Death-Disasters");
 
+  // btnDisasters.addEventListener("click", function () {
+  //   // change border color
+  //   btnDisasters.style.borderColor = "#000000";
+  //   btnDeaths.style.borderColor = "#ae017e";
+  // });
+
+  // btnDeaths.addEventListener("click", function () {
+  //   // change border color
+  //   btnDeaths.style.borderColor = "#000000";
+  //   btnDisasters.style.borderColor = "#006fdd";
+  // });
   btnDisasters.addEventListener("click", function () {
-    // change border color
+    // Change border color and add gray-out effect
     btnDisasters.style.borderColor = "#000000";
-    btnDeaths.style.borderColor = "#ae017e";
+    btnDisasters.style.opacity = "1";  // Reset opacity
+
+    // Reset the other button
+    btnDeaths.style.borderColor = "#ae017e";  
+    btnDeaths.style.opacity = "0.5";  // Slightly reduce opacity for a grayed effect
+    
   });
 
   btnDeaths.addEventListener("click", function () {
-    // change border color
-    btnDeaths.style.borderColor = "#000000";
-    btnDisasters.style.borderColor = "#006fdd";
+      // Change border color and add gray-out effect
+      btnDeaths.style.borderColor = "#000000";
+      btnDeaths.style.opacity = "1";  // Reset opacity
+
+      // Reset the other button
+      btnDisasters.style.borderColor = "#006fdd";
+      btnDisasters.style.opacity = "0.5";  // Slightly reduce opacity for a grayed effect
   });
 });
   

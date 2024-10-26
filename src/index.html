@@ -36,26 +36,25 @@
       <div id="choropleth" style="height: -webkit-fill-available;">
         <div style="display: flex; align-items: center; margin-bottom: 50px;">
           <button class="globalFilter-button" id="Number-Disasters"
-            style="margin-left:150px ;margin-right:20px ; border: 4px solid #000000; background-color: #006fdd;"
+            style="margin-left:150px ;margin-right:20px ; border: 3px solid #000000; background-color: #006fdd;"
             onclick="changeFilter(this,'num_disasters')">Number of Disasters
           </button>
           <button class="globalFilter-button" id="Death-Disasters" 
-            style="margin-left:50px ;border: 4px solid #ae017e; background-color: #ae017e;"
+            style="margin-left:50px ;border: 3px solid #ae017e; background-color: #ae017e; opacity: 0.5;"
             onclick="changeFilter(this,'total_deaths')">Death caused by Disasters
           </button>
         </div>
         <script src="choropleth.js"></script>
       </div>
     </div>
+
     <div id="radialChart" style="width: 700px;height: 300px;">
       <script src="radialChart.js"></script>
       <script src="radialChartUpdate.js"></script>
-
     </div>
+
     <div style="display: flex; align-items: center; width: 700px;">
-      <!-- <div style="width: 20px; height: 20px; margin-right: 15px;"></div> -->
       <h3 style="margin-right: 6rem;">Natural Disasters</h3>
-      <!-- <div style="width: 20px; height: 20px; margin-right: 15px;"></div> -->
       <h3 style="margin-left: 6rem;">Technological Disasters</h3>
     </div>
 
