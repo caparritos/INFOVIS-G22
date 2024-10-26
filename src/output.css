@@ -678,7 +678,7 @@ video {
   --primary-color: #1F5F5B;
   --value-offset-y: var(--ticks-gap);
   --value-active-color: white;
-  --value-background: transparent;
+  --value-backgrou  d: transparent;
   --value-background-hover: var(--primary-color);
   --value-font: 700 12px/1 Arial;
   --fill-color: var(--primary-color);
