@@ -39,7 +39,7 @@
             style="margin-left:150px ;margin-right:20px ; border: 3px solid #000000; background-color: #006fdd;"
             onclick="changeFilter(this,'num_disasters')">Number of Disasters
           </button>
-          <button class="globalFilter-button" id="Death-Disasters" 
+          <button class="globalFilter-button" id="Death-Disasters"
             style="margin-left:50px ;border: 3px solid #ae017e; background-color: #ae017e; opacity: 0.4;"
             onclick="changeFilter(this,'total_deaths')">Death caused by Disasters
           </button>
@@ -48,20 +48,26 @@
       </div>
     </div>
 
-    <div id="radialChart" style="width: 700px;height: 300px;">
-      <script src="radialChart.js"></script>
-      <script src="radialChartUpdate.js"></script>
+    <div id="radial-chart-container" style="height: min-content; flex-direction: column;">
+      <h2 id="radial-title" style="font-weight: bold; font-size: larger;">Disaster count per type</h2>
+      <div id="radialChart" style="width: 700px;height: 280px; display: flex; flex-direction: row;">
+        <script src="radialChart.js"></script>
+        <script src="radialChartUpdate.js"></script>
+      </div>
     </div>
 
     <div style="display: flex; align-items: center; width: 700px;">
-      <h3 style="margin-right: 6rem;">Natural Disasters</h3>
-      <h3 style="margin-left: 6rem;">Technological Disasters</h3>
+      <h3 style="margin-right: 6rem; margin-left: 10em;">Natural Disasters</h3>
+      <h3 style="margin-right: 5rem; margin-left: auto;">Technological Disasters</h3>
     </div>
 
-
+    <div id="scatterplot-container" style="height: min-content; flex-direction: column;">
+    <h2 id="scatter-title" style="font-weight: bold; font-size: larger; padding-bottom: 10px;">Disaster likelihood and deaths per country</h2>
     <div class="visualization shadow-lg m-2 rounded-2 pt-3 justify-content-start flex-column" id="scatterplot">
       <script src="scatterPlot.js"></script>
     </div>
+    </div>
+
     </div>
     <div class="search-container">
       <input type="text" id="countrySearch" placeholder="Search for a country..." onkeyup="filterCountries()">
@@ -74,9 +80,10 @@
       <button class="region-btn selected" data-region="Europe">Europe</button>
       <button class="region-btn selected" data-region="Oceania">Oceania</button>
     </div>
-    
+
   </main>
-  <div id="tooltip" style="position: absolute; opacity: 0; background: lightgray; padding: 5px; border-radius: 5px;max-width: 200px;word-wrap: break-word;overflow-wrap: break-word;">
-  </body>
+  <div id="tooltip"
+    style="position: absolute; opacity: 0; background: lightgray; padding: 5px; border-radius: 5px;max-width: 200px;word-wrap: break-word;overflow-wrap: break-word;">
+</body>
 
 </html>

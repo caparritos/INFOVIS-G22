@@ -1131,16 +1131,16 @@ input[type="text"] {
 /* Style for dropdown */
 .dropdown {
   position: absolute;
-  top: 40px;
+  top: -100px;
   width: 100%;
   max-height: 100px;
   border: 1px solid #ccc;
-  border-top: none;
-  border-radius: 0 0 5px 5px;
+  border-radius: 5px 5px 5px 5px;
   background-color: white;
   overflow-y: auto;
   display: none;
   z-index: 1;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow to create depth */
 }
 
 .dropdown div {

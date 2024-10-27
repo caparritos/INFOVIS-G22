@@ -180,8 +180,8 @@ function createScatterPlot(minYear, maxYear, country,regions) {
 
   // Define margins
   var margin = { top: 5, right: 15, bottom: 50, left: 60 },
-    width = 600,
-    height = 250 - margin.top - margin.bottom;
+    width = 580,
+    height = 240 - margin.top - margin.bottom;
 
   // Add svg elemnet to page
   var svg = d3

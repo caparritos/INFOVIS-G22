@@ -1,7 +1,7 @@
 // SIZE OF SVG (GRAPH)
 const width = 340,
   height = 320,
-  chartRadius = height / 2 - 40;
+  chartRadius = height / 2 - 50;
 
 
   var colorNatural = '#1F5F5B'
@@ -40,7 +40,7 @@ function createRadialChart(minYear, maxYear, country) {
     .attr("width", width)
     .attr("height", height)
     .append("g")
-    .attr("transform", `translate(${width / 2}, ${height / 2})`);
+    .attr("transform", `translate(${width / 2}, ${height / 2 - 10})`);
 
   // Adicionar o segundo SVG para o segundo gráfico (lado a lado)
   let svg2 = d3
@@ -50,7 +50,7 @@ function createRadialChart(minYear, maxYear, country) {
     .attr("width", width)
     .attr("height", height)
     .append("g")
-    .attr("transform", `translate(${width / 2}, ${height / 2})`); // Mesmo centro
+    .attr("transform", `translate(${width / 2}, ${height / 2 - 10})`); // Mesmo centro
 
   // // SELECT WHERE TO PUT TOOLTIP DIV
   // let tooltip = d3.select('html').append('div')
