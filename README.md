@@ -1,24 +1,22 @@
 # INFOVIS-G22
 
-## Development Phase
+## Project Architecture:
 
-1. Clone this repository
-```bash
-git clone https://github.com/jjasferreira/eu-vehicles-js.git
+```
+└── src
+    ├── index.html -> main html file -> run with "python -m http.server" or a vscode extension
+    ├── javascript files and css
+    ├── pkg
+    └── datasets folder
 ```
 
-2. Install [`nvm`](https://github.com/nvm-sh/nvm#install--update-script) (recommended) or Node.js and npm separately via `apt`:
-```bash
-sudo apt install nodejs
-sudo apt install npm
-```
+## Recomendations:
 
-3. Install dependencies, including Tailwind CSS via `npm`:
-```bash
-npm i
-```
+The recomended display specifications are:
 
-4. Start the Tailwind CLI build process to scan your template files for classes and build your CSS
-```bash
-npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch
+```
+Resolution: 1920 x 1080
+Display Scale: 125%
+Browser zoom: 90% -> VERY IMPORTANT
+Aspect ratio: 16:9
 ```
