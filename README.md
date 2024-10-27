@@ -20,3 +20,5 @@ Display Scale: 125%
 Browser zoom: 90% -> VERY IMPORTANT
 Aspect ratio: 16:9
 ```
+
+***Note: We did not test our project in safari***
