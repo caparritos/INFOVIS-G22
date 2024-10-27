@@ -12,7 +12,7 @@
 
 ## Recomendations:
 
-The recomended display specifications are:
+The recomended display specifications in a laptop are:
 
 ```
 Resolution: 1920 x 1080
