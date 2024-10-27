@@ -57,6 +57,14 @@ function changeFilter(button, filter) {
   legendGroup.remove();
   updateChoropleth(minYear, maxYear, country, filter)
   updateRadialChart(minYear, maxYear, country, filter)
+  updateRadialTitle(filter === 'num_disasters' ? 'Disaster count' : 'Deaths')
+}
+
+function updateRadialTitle(newTitle) {
+  const titleElement = document.getElementById("radial-title");
+  if (titleElement) {
+    titleElement.textContent = newTitle + " by type";
+  }
 }
   
 
